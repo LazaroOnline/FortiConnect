@@ -1,0 +1,18 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:local="clr-namespace:FortiConnect"
+			x:Class="FortiConnect.App">
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
+
+	<Application.Styles>
+		<!--<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>-->
+		<!--<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>-->
+
+		<!-- https://avaloniaui.net/blog/2019-04-05-avalonia-0.8-release#dark-theme -->
+		<!-- https://github.com/AvaloniaUI/Avalonia/pull/2078 -->
+		<StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
+		<StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default"/>
+    </Application.Styles>
+</Application>

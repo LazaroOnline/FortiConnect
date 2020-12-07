@@ -1,0 +1,64 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="clr-namespace:FortiConnect.ViewModels;assembly=FortiConnect"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d"
+		d:DesignWidth="350" d:DesignHeight="340"
+		Width="350" Height="340"
+		x:Class="FortiConnect.Views.MainWindow"
+		Icon="/Assets/avalonia-logo.ico"
+		Title="FortiConnect">
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<!-- https://avaloniaui.net/docs/layout -->
+	<!-- https://avaloniaui.net/docs/controls/grid -->
+	
+	<StackPanel Spacing="6" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="VPN Password" VerticalAlignment="Center"/>
+			<TextBox   MinWidth="200" Text="{Binding VpnPassword}" PasswordChar="•" />
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="Email Protocol" VerticalAlignment="Center" />
+			<ComboBox MinWidth="200" Items="{Binding EmailProtocolOptions}" SelectedItem="{Binding EmailProtocol}"/>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="Email Server" VerticalAlignment="Center" />
+			<TextBox MinWidth="200" Text="{Binding EmailServer}" />
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" MinHeight="35">
+			<TextBlock     IsVisible="{Binding IsPortEnabled}" Width="100" Text="Email Port" VerticalAlignment="Center" />
+			<NumericUpDown IsVisible="{Binding IsPortEnabled}" MinWidth="200" Text="{Binding EmailPort}" />
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="Email User-Name" VerticalAlignment="Center" />
+			<TextBox   MinWidth="200" Text="{Binding EmailUserName}" />
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="Email Password" VerticalAlignment="Center" />
+			<TextBox   MinWidth="200" Text="{Binding EmailPassword}" PasswordChar="•" />
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" >
+			<TextBlock Width="100" Text="Email Vpn Code" VerticalAlignment="Center" />
+			<TextBox   MinWidth="160" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
+			<Button    Width="40" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" FontSize="10" Margin="0,0,0,0">Copy</Button>
+		</StackPanel>
+
+		<StackPanel Orientation="Vertical" >
+			<Button Command="{Binding OnGetEmailVpnCodeCommand}" FontSize="17" Margin="0,5,0,5">Get VPN Email Code</Button>
+			<Button Command="{Binding OnConnectToVpnCommand}"    FontSize="20" Margin="0,5,0,0">Connect to VPN</Button>
+		</StackPanel>
+
+	</StackPanel>
+</Window>
