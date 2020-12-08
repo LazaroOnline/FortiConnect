@@ -20,12 +20,30 @@ namespace FortiConnect.ViewModels
 			get => _emailProtocol;
 			set => this.RaiseAndSetIfChanged(ref _emailProtocol, value);
 		}
+		
+		public bool _isPopupVisible;
+		public bool IsPopupVisible  {
+			get => _isPopupVisible;
+			set => this.RaiseAndSetIfChanged(ref _isPopupVisible, value);
+		}
+		
+		public string _outputMessage;
+		public string OutputMessage  {
+			get => _outputMessage;
+			set => this.RaiseAndSetIfChanged(ref _outputMessage, value);
+		}
+		
+		public string _outputMessageTitle = "Error";
+		public string OutputMessageTitle  {
+			get => _outputMessageTitle;
+			set => this.RaiseAndSetIfChanged(ref _outputMessageTitle, value);
+		}
 
 		public IEnumerable<EmailServerProtocol> EmailProtocolOptions { get; set; }
-		
+
 		public string EmailServer   { get; set; }
 		public int    EmailPort     { get; set; }
-		
+
 		public string EmailUserName { get; set; }
 		public string EmailPassword { get; set; }
 
@@ -40,7 +58,7 @@ namespace FortiConnect.ViewModels
 			get => _isPortEnabled;
 			set => this.RaiseAndSetIfChanged(ref _isPortEnabled, value);
 		}
-		
+
 		public bool _isEnabledCopyEmail;
 		public bool IsEnabledCopyEmail  {
 			get => _isEnabledCopyEmail;
@@ -50,18 +68,19 @@ namespace FortiConnect.ViewModels
 		private FortiConnector _fortiConnector { get; set; }
 		private AppSettings _appSettings { get; set; }
 		private AppSettingsWriter _appSettingsWriter { get; set; }
-		
+
 
 		// https://avaloniaui.net/docs/controls/button
 		public ReactiveCommand<Unit, Unit> OnConnectToVpnCommand { get; }
 		public ReactiveCommand<Unit, Unit> OnGetEmailVpnCodeCommand { get; }
 		public ReactiveCommand<Unit, Unit> OnCopyEmailVpnCodeCommand { get; }
+		public ReactiveCommand<Unit, Unit> OnCloseMessagePopup { get; }
 
 		// Constructor required by the designer tools.
 		public MainWindowViewModel()
 			: this(null, null, null) // Call the other constructor
 		{ }
-		
+
 		public MainWindowViewModel(
 			  FortiConnector fortiConnector
 			 ,AppSettings appSettings
@@ -76,15 +95,19 @@ namespace FortiConnect.ViewModels
 			});
 
 			OnConnectToVpnCommand = ReactiveCommand.Create(() => {
-				LoginToVpn();
+				TryAction(LoginToVpn);
 			});
 			OnGetEmailVpnCodeCommand = ReactiveCommand.Create(() => {
-				GetEmailVpnCode();
+				TryAction(GetEmailVpnCodeAndCopyToClipboard);
 			});
 			OnCopyEmailVpnCodeCommand = ReactiveCommand.Create(() => {
-				CopyEmailVpnCode();
+				TryAction(CopyEmailVpnCode);
 			});
-			
+			OnCloseMessagePopup = ReactiveCommand.Create(() => {
+				this.IsPopupVisible = false;
+				this.OutputMessage = "";
+			});
+
 			_fortiConnector = fortiConnector ?? Splat.Locator.Current.GetService<FortiConnector>();
 			_appSettings = appSettings ?? Splat.Locator.Current.GetService<AppSettings>();
 			_appSettingsWriter = appSettingsWriter ?? Splat.Locator.Current.GetService<AppSettingsWriter>();
@@ -115,12 +138,18 @@ namespace FortiConnect.ViewModels
 			var emailConfig = GetEmailConfig();
 			this.EmailVpnCode = _fortiConnector.Login(VpnPassword, emailConfig, _appSettings.EmailAccount.MarkVpnEmailAsRead);
 		}
+
+		public void GetEmailVpnCodeAndCopyToClipboard()
+		{
+			GetEmailVpnCode();
+			CopyEmailVpnCode();
+		}
 		
-		public void GetEmailVpnCode()
+		public string GetEmailVpnCode()
 		{
 			var emailConfig = GetEmailConfig();
 			this.EmailVpnCode = _fortiConnector.GetVpnEmailCode(emailConfig);
-			CopyEmailVpnCode();
+			return EmailVpnCode;
 		}
 
 		public void CopyEmailVpnCode()
@@ -128,7 +157,7 @@ namespace FortiConnect.ViewModels
 			Avalonia.Application.Current.Clipboard.SetTextAsync(EmailVpnCode);
 			//System.Windows.Forms.Clipboard.SetText(EmailVpnCode); // WinForms is Windows only, and it requires the Program.Main method to be [STAThread].
 		}
-		
+
 		public void SaveConfig()
 		{
 			var newAppSettings = new AppSettings()
@@ -149,6 +178,33 @@ namespace FortiConnect.ViewModels
 				},
 			};
 			_appSettingsWriter.Save(newAppSettings, fileName: Program.APPSETTINGS_AUTOSAVE_FILENAME);
+		}
+
+		public T TryAction<T>(Func<T> function)
+		{
+			try
+			{
+				return function();
+			}
+			catch(Exception ex)
+			{
+				this.OutputMessage = $"{ex.GetType()}: {ex}";
+				this.IsPopupVisible = true;
+			}
+			return default(T);
+		}
+
+		public void TryAction(Action action)
+		{
+			try
+			{
+				action();
+			}
+			catch(Exception ex)
+			{
+				this.OutputMessage = $"{ex.GetType()}: {ex}";
+				this.IsPopupVisible = true;
+			}
 		}
 	}
 }

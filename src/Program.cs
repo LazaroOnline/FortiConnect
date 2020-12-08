@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Splat;
 using ReactiveUI;
@@ -13,8 +14,14 @@ using FortiConnect.Services;
 
 namespace FortiConnect
 {
-	class Program
+	public class Program
 	{
+		public enum AppCommand
+		{
+			GetEmailVpnCode,
+			LoginToVpn,
+		}
+
 		public const string APPSETTINGS_FILENAME = "AppSettings.json";
 		public const string APPSETTINGS_LOCAL_FILENAME = "AppSettings.local.json";
 		public const string APPSETTINGS_AUTOSAVE_FILENAME = "AppSettings.AutoSave.json";
@@ -25,6 +32,7 @@ namespace FortiConnect
 		// [STAThread]
 		public static void Main(string[] args)
 		{
+			Console.WriteLine("Starting FortiConnect...");
 			var configBuilder = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile(APPSETTINGS_FILENAME, optional: true)
@@ -32,9 +40,23 @@ namespace FortiConnect
 				.AddJsonFile(APPSETTINGS_AUTOSAVE_FILENAME, optional: true)
 				.AddCommandLine(args);
 			var config = configBuilder.Build();
-
+			
 			// Dependency Injection.
 			RegisterServices(config);
+
+			if (args.Any(arg => IsCommandArgument(arg, AppCommand.GetEmailVpnCode))) {
+				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
+				var emailVpnCode = viewModel.GetEmailVpnCode();
+				Console.WriteLine($"Email VPN Code: {emailVpnCode}");
+				return;
+			}
+			
+			if (args.Any(arg => IsCommandArgument(arg, AppCommand.LoginToVpn))) {
+				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
+				viewModel.LoginToVpn();
+				Console.WriteLine($"Done.");
+				return;
+			}
 
 			BuildAvaloniaApp()
 			.StartWithClassicDesktopLifetime(args);
@@ -78,6 +100,20 @@ namespace FortiConnect
 				}
 				return fortiConnector;
 			});
+			
+			services.RegisterLazySingleton<MainWindowViewModel>(() => {
+				var mainWindowViewModel = new MainWindowViewModel();
+				return mainWindowViewModel;
+			});
+
+			
+		}
+
+		public static bool IsCommandArgument(string arg, AppCommand command)
+		{
+			var commandName = command.ToString().ToLower();
+			var argName = arg.ToLower().TrimStart('-', '/', '\\').Trim();
+			return argName == commandName;
 		}
 	}
 }
