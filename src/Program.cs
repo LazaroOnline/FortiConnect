@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Splat;
 using ReactiveUI;
@@ -25,6 +26,12 @@ namespace FortiConnect
 		public const string APPSETTINGS_FILENAME = "AppSettings.json";
 		public const string APPSETTINGS_LOCAL_FILENAME = "AppSettings.local.json";
 		public const string APPSETTINGS_AUTOSAVE_FILENAME = "AppSettings.AutoSave.json";
+		
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		[DllImport("kernel32.dll")]
+		static extern IntPtr GetConsoleWindow();
 
 		// Initialization code. Don't use any Avalonia, third-party APIs or any
 		// SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -32,6 +39,14 @@ namespace FortiConnect
 		// [STAThread]
 		public static void Main(string[] args)
 		{
+			var useConsoleMode_GetVpnEmailCode = args.Any(arg => IsCommandArgument(arg, AppCommand.GetEmailVpnCode));
+			var useConsoleMode_LoginToVpn = args.Any(arg => IsCommandArgument(arg, AppCommand.LoginToVpn));
+			var isConsoleMode = useConsoleMode_GetVpnEmailCode || useConsoleMode_LoginToVpn;
+			if (!isConsoleMode) {
+				IntPtr h = GetConsoleWindow();
+				ShowWindow(h, 0);
+			}
+
 			Console.WriteLine("Starting FortiConnect...");
 			var configBuilder = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
@@ -44,19 +59,20 @@ namespace FortiConnect
 			// Dependency Injection.
 			RegisterServices(config);
 
-			if (args.Any(arg => IsCommandArgument(arg, AppCommand.GetEmailVpnCode))) {
+			if (useConsoleMode_GetVpnEmailCode) {
 				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
 				var emailVpnCode = viewModel.GetEmailVpnCode();
 				Console.WriteLine($"Email VPN Code: {emailVpnCode}");
 				return;
 			}
 			
-			if (args.Any(arg => IsCommandArgument(arg, AppCommand.LoginToVpn))) {
+			if (useConsoleMode_LoginToVpn) {
 				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
 				viewModel.LoginToVpn();
 				Console.WriteLine($"Done.");
 				return;
 			}
+			
 
 			BuildAvaloniaApp()
 			.StartWithClassicDesktopLifetime(args);

@@ -7,6 +7,7 @@ It gets the VPN code from your recent emails automatically.
 Optionally if you are on Windows and have the FortiClient opened, it can also write the credentials and email code in the FortiClient VPN UI.  
 
 # Console Mode
+See issues in the comments of this [Stack-Overflow question](https://stackoverflow.com/questions/65208298/how-to-run-dotnet-core-console-application-that-shows-the-console-window-or-not/65212930#65212930).  
 This app can run in console mode if any of the console actions are passed as parameters:
 - `GetEmailVpnCode`
 - `LoginToVpn`
