@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace FortiConnect.Services
 {
@@ -43,7 +43,7 @@ namespace FortiConnect.Services
 			{
 				// Now you could use different messages to send text (WM_CHAR, WM_KEYDOWN, ...)
 				// I decided to use the clipboard:
-				Clipboard.SetText("this is magic!"); // Copy some text to the clipboard
+				//Clipboard.SetText("this is magic!"); // Copy some text to the clipboard
 				SendMessage(m_hWndEdit, WM_PASTE, 0, 0); // paste it to the target window
 			}
 		}

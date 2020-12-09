@@ -6,7 +6,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using FortiConnect.Models;
 using Splat;
 
@@ -72,7 +72,7 @@ namespace FortiConnect.Services
 				SetForegroundWindow(windowHandle);
 				Thread.Sleep(2000);
 				// https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
-				SendKeys.SendWait(textToWrite);
+				//SendKeys.SendWait(textToWrite);
 			}
 		}
 		

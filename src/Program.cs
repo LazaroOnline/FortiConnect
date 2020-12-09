@@ -1,7 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Splat;
 using ReactiveUI;
 using Avalonia;
@@ -11,6 +15,7 @@ using FortiConnect;
 using FortiConnect.Models;
 using FortiConnect.ViewModels;
 using FortiConnect.Services;
+using System.Runtime.InteropServices;
 
 namespace FortiConnect
 {
@@ -30,8 +35,12 @@ namespace FortiConnect
 		// SynchronizationContext-reliant code before AppMain is called: things aren't initialized
 		// yet and stuff might break.
 		// [STAThread]
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
+			
+			IntPtr h = GetConsoleWindow();
+			ShowWindow(h, 0);
+
 			Console.WriteLine("Starting FortiConnect...");
 			var configBuilder = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
@@ -44,10 +53,41 @@ namespace FortiConnect
 			// Dependency Injection.
 			RegisterServices(config);
 
+
 			if (args.Any(arg => IsCommandArgument(arg, AppCommand.GetEmailVpnCode))) {
-				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
-				var emailVpnCode = viewModel.GetEmailVpnCode();
-				Console.WriteLine($"Email VPN Code: {emailVpnCode}");
+
+
+				// switch here to show or not show console window
+				// ShowWindow(h, 1);
+				
+				var program = new Program();
+				var host = new Microsoft.Extensions.Hosting.HostBuilder()
+					.ConfigureAppConfiguration((hostContext, configApp) =>
+					{
+					})
+					.ConfigureLogging((hostContext, logging) =>
+					{
+						logging
+							.AddConfiguration(hostContext.Configuration.GetSection("Logging"))
+							//.SetMinimumLevel(LogLevel.Trace)
+							.AddDebug()
+							//.AddNLog(Configuration)
+						;
+					})
+					.ConfigureServices((hostContext, services) =>
+					{
+						/*
+						*/
+						//services.AddTransient<MainWindowViewModel>();
+						services.AddTransient<IEmailService, EmailService>();
+						services.AddTransient<MainWindowViewModel>((x) => Splat.Locator.Current.GetService<MainWindowViewModel>());
+						services.AddHostedService<ConsoleApp>();
+						//services.RegisterServicesForDependencyInjection();
+					})
+					.UseConsoleLifetime();
+
+				await host.Build().RunAsync();
+
 				return;
 			}
 			
@@ -78,6 +118,12 @@ namespace FortiConnect
 		{
 			RegisterServices(Locator.CurrentMutable, Locator.Current, config);
 		}
+		
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		[DllImport("kernel32.dll")]
+		static extern IntPtr GetConsoleWindow();
 
 		public static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver, IConfiguration config)
 		{
