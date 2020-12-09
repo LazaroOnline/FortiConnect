@@ -1,5 +1,6 @@
 
-# FortiConnect
+# <img src="Icon.png" width="35"/> FortiConnect
+
 This app automates the process of connecting to the Fortinet Client VPN when using email as a 2FA (2 Factor Authentication).  
 
 It gets the VPN code from your recent emails automatically.
