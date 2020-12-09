@@ -58,7 +58,7 @@ namespace FortiConnect.Services
 			var process = GetOrCreateFortiClientProcess();
 			WriteToProcess(process, Keys.TAB + Keys.TAB + Keys.TAB + vpnUserPass + Keys.ENTER);
 			var vpnEmailCode =_emailService.GetLastVpnEmailCode(emailConfig, markEmailAsRead);
-			WriteToProcess(process, Keys.TAB + vpnEmailCode + Keys.ENTER);
+			WriteToProcess(process, vpnEmailCode + Keys.ENTER);
 			return vpnEmailCode;
 		}
 
