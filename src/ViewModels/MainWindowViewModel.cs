@@ -71,10 +71,10 @@ namespace FortiConnect.ViewModels
 
 
 		// https://avaloniaui.net/docs/controls/button
-		public ReactiveCommand<Unit, Unit> OnConnectToVpnCommand { get; }
-		public ReactiveCommand<Unit, Unit> OnGetEmailVpnCodeCommand { get; }
-		public ReactiveCommand<Unit, Unit> OnCopyEmailVpnCodeCommand { get; }
 		public ReactiveCommand<Unit, Unit> OnCloseMessagePopup { get; }
+		public ReactiveCommand<Unit, Unit> OnCopyEmailVpnCodeCommand { get; }
+		public ReactiveCommand<Unit, Unit> OnGetEmailVpnCodeCommand { get; }
+		public ReactiveCommand<Unit, Unit> OnConnectToVpnCommand { get; }
 
 		// Constructor required by the designer tools.
 		public MainWindowViewModel()

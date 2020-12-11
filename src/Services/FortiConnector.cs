@@ -6,7 +6,6 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using FortiConnect.Models;
 using Splat;
 
@@ -16,33 +15,20 @@ namespace FortiConnect.Services
 	{
 		public string FortiClientExeFullPath { get; set; } = @"C:\Program Files\Fortinet\FortiClient\FortiClient.exe";
 		public string FortiClientProcessName { get; set; } = @"FortiClient.exe";
+		public int DelayToSpawnFortiClientProcess { get; set; } = 2000;
 		private IEmailService _emailService { get; set; }
+		private IProcessWritterService _processWritterService { get; set; }
+		
 		private bool _emailMarkAsRead { get; set; }
 
-		public FortiConnector(IEmailService emailService, bool markVpnEmailsAsRead = false)
+		public FortiConnector(
+			 IEmailService emailService
+			,IProcessWritterService processWritterService
+			,bool markVpnEmailsAsRead = false)
 		{
 			_emailService = emailService ?? Splat.Locator.Current.GetService<IEmailService>();
+			_processWritterService = processWritterService ?? Splat.Locator.Current.GetService<IProcessWritterService>();
 			_emailMarkAsRead = markVpnEmailsAsRead;
-		}
-
-		// import the function in your class
-		[DllImport ("User32.dll")]
-		static extern int SetForegroundWindow(IntPtr point);
-		
-		// https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
-		// <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-		// <UseWPF>true</UseWPF>
-		// <UseWindowsForms>true</UseWindowsForms>
-
-		// https://stackoverflow.com/questions/825651/how-can-i-send-the-f4-key-to-a-process-in-c
-		[DllImport("user32.dll")]
-		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-		// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys?view=net-5.0
-		public static class Keys
-		{
-			public const string ENTER = "{ENTER}";
-			public const string TAB = "{TAB}";
 		}
 
 		public string GetVpnEmailCode(EmailConfig emailConfig)
@@ -53,29 +39,20 @@ namespace FortiConnect.Services
 
 		public string Login(string vpnUserPass, EmailConfig emailConfig, bool markEmailAsRead)
 		{
-			//var vpnEmailCodeTest =_emailService.GetLastVpnEmailCode(emailConfig); return;  // TODO: delete this testing line.
-
 			var process = GetOrCreateFortiClientProcess();
-			WriteToProcess(process, Keys.TAB + Keys.TAB + Keys.TAB + vpnUserPass + Keys.ENTER);
+
+			var tab = _processWritterService.GetKeyTab();
+			var enter = _processWritterService.GetKeyEnter();
+			var vpnUserPassLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnUserPass);
+			_processWritterService.WriteToProcess(process, tab + tab + tab + vpnUserPassLiteral + enter);
+
 			var vpnEmailCode =_emailService.GetLastVpnEmailCode(emailConfig, markEmailAsRead);
-			WriteToProcess(process, vpnEmailCode + Keys.ENTER);
+			var vpnEmailCodeLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnEmailCode);
+			_processWritterService.WriteToProcess(process, vpnEmailCodeLiteral + enter);
+
 			return vpnEmailCode;
 		}
 
-		public void WriteToProcess(Process process, string textToWrite)
-		{
-			if (process != null)
-			{
-				IntPtr windowHandle = process.MainWindowHandle;
-				ShowWindow(windowHandle, 1);
-				Thread.Sleep(2000);
-				SetForegroundWindow(windowHandle);
-				Thread.Sleep(2000);
-				// https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
-				SendKeys.SendWait(textToWrite);
-			}
-		}
-		
 		public Process GetOrCreateFortiClientProcess()
 		{
 			var process = GetExistingFortiClientProcess();
@@ -95,7 +72,7 @@ namespace FortiConnect.Services
 			return processes.FirstOrDefault();
 		}
 
-		public Process StartFortiClientProcess()
+		public Process StartFortiClientProcess(int? delayToSpawnFortiClientProcess = null)
 		{
 			Process fortiClientProcess = new Process();
 			fortiClientProcess.StartInfo.FileName = FortiClientExeFullPath;
@@ -108,7 +85,8 @@ namespace FortiConnect.Services
 			catch(Exception ex) {
 				Console.WriteLine("Handled exception during process.WaitForInputIdle: " + ex);
 			}
-			Thread.Sleep(2000); // FortiClient spawns another 2 processes to render its UI, taking longer in a separate process.
+			// FortiClient spawns another 2 processes to render its UI, taking longer in a separate process.
+			Thread.Sleep(delayToSpawnFortiClientProcess ?? DelayToSpawnFortiClientProcess);
 
 			return fortiClientProcess;
 		}

@@ -88,16 +88,19 @@ namespace FortiConnect
 			services.Register<AppSettings>(() => config.Get<AppSettings>());
 			services.Register<AppSettingsWriter>(() => new AppSettingsWriter());
 			services.Register<IEmailService>(() => new EmailService());
+			services.Register<IProcessWritterService>(() => new ProcessWritterService() { DelayToShowWindow = appSettings.DelayToShowVpnClient});
 
 			services.RegisterLazySingleton<FortiConnector>(() => {
 				var emailService = resolver.GetService<IEmailService>();
-				var fortiConnector = new FortiConnector(emailService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
+				var processWritterService = resolver.GetService<IProcessWritterService>();
+				var fortiConnector = new FortiConnector(emailService, processWritterService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
 				if (!string.IsNullOrWhiteSpace(appSettings.FortiClient.ExeFullPath)) {
 					fortiConnector.FortiClientExeFullPath = appSettings.FortiClient.ExeFullPath;
 				}
 				if (!string.IsNullOrWhiteSpace(appSettings.FortiClient.ProcessName)) {
 					fortiConnector.FortiClientProcessName = appSettings.FortiClient.ProcessName;
 				}
+				fortiConnector.DelayToSpawnFortiClientProcess = appSettings.DelayToSpawnFortiClientProcess;
 				return fortiConnector;
 			});
 			
@@ -105,8 +108,6 @@ namespace FortiConnect
 				var mainWindowViewModel = new MainWindowViewModel();
 				return mainWindowViewModel;
 			});
-
-			
 		}
 
 		public static bool IsCommandArgument(string arg, AppCommand command)

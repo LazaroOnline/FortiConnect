@@ -14,6 +14,8 @@ namespace FortiConnect
 		public VpnConfig Vpn { get; set; }
 		public EmailServerConfig EmailServer { get; set; }
 		public EmailAccountConfig EmailAccount { get; set; }
+		public int DelayToShowVpnClient { get; set; } = 2000;
+		public int DelayToSpawnFortiClientProcess { get; set; } = 2000;
 	}
 	
 	public class FortiClientConfig
