@@ -19,6 +19,7 @@ namespace FortiConnect.Services
 	// https://www.youtube.com/watch?v=h6hMz4JtHyg
 	public class EmailExchangeProvider : EmailProviderBase
 	{
+		//public override string GetLastVpnEmailCode(EmailConfig emailConfig, bool markAsRead, int maxRetries = 3, int millisecondsBetweenRetries = 3000)
 		public override string GetLastVpnEmailCode(EmailConfig emailConfig, bool markAsRead)
 		{
 			var client = GetClient(emailConfig);
@@ -27,7 +28,14 @@ namespace FortiConnect.Services
 				return null;
 			}
 
-			var mostRecentVpnEmailMessage = GetVpnEmail(client);
+			EmailMessage mostRecentVpnEmailMessage = null;
+			Retry.Action((r) => {
+					mostRecentVpnEmailMessage = GetVpnEmail(client);
+				}
+				,whileIs: (r) => mostRecentVpnEmailMessage == null
+				,maxRetries: 3
+				,every: TimeSpan.FromSeconds(3)
+			);
 
 			if (mostRecentVpnEmailMessage == null) {
 				return null;
@@ -55,7 +63,8 @@ namespace FortiConnect.Services
 			// https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-use-search-filters-with-ews-in-exchange
 			var subjectFilterBySubject = new SearchFilter.ContainsSubstring(ItemSchema.Subject, $"{EmailSubjectPrefix}", ContainmentMode.Substring, ComparisonMode.IgnoreCase);
 			var searchFilterUnread = new SearchFilter.IsEqualTo(EmailMessageSchema.IsRead, false);
-			var searchFilterNewVpnCode = new SearchFilter.SearchFilterCollection(LogicalOperator.And, searchFilterUnread, subjectFilterBySubject);
+			var searchFilterRecentDate = new SearchFilter.IsGreaterThan(EmailMessageSchema.DateTimeReceived, DateTime.UtcNow.AddMinutes(-30));
+			var searchFilterNewVpnCode = new SearchFilter.SearchFilterCollection(LogicalOperator.And, searchFilterUnread, subjectFilterBySubject, searchFilterRecentDate);
 			var emailView = new ItemView(pageSize: 5);
 			var vpnEmails = vpnFolder.FindItems(searchFilterNewVpnCode, emailView);
 			var mostRecentVpnEmailItem = vpnEmails.FirstOrDefault();

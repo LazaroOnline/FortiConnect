@@ -5,8 +5,9 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d"
-		d:DesignWidth="370" d:DesignHeight="390"
-		Width="370" Height="390"
+		d:DesignWidth="380" d:DesignHeight="420"
+		MinWidth="380" MinHeight="420"
+		Width="380" Height="420"
 		x:Class="FortiConnect.Views.MainWindow"
 		Icon="/Assets/FortiConnect.ico"
 		Title="FortiConnect">
@@ -18,7 +19,7 @@
 
 	<Window.Styles>
 		<Style Selector="TextBox">
-			<Setter Property="FontWeight" Value="200"/>
+			<Setter Property="MinWidth" Value="200"/>
 		</Style>
 	</Window.Styles>
 
@@ -48,7 +49,7 @@
 
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="Email Server" VerticalAlignment="Center" />
-				<TextBox MinWidth="200" Text="{Binding EmailServer}" />
+				<TextBox Text="{Binding EmailServer}" />
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal" MinHeight="35">
@@ -58,12 +59,17 @@
 
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="Email User-Name" VerticalAlignment="Center" />
-				<TextBox   MinWidth="200" Text="{Binding EmailUserName}" />
+				<TextBox Text="{Binding EmailUserName}" />
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="Email Password" VerticalAlignment="Center" />
-				<TextBox   MinWidth="200" Text="{Binding EmailPassword}" PasswordChar="•" />
+				<TextBox Text="{Binding EmailPassword}" PasswordChar="•" />
+			</StackPanel>
+
+			<StackPanel Orientation="Horizontal" ToolTip.Tip="Mark VPN emails as read after processing." >
+				<TextBlock Width="100" Text="Mark as read" VerticalAlignment="Center" />
+				<CheckBox IsChecked="{Binding MarkVpnEmailAsRead}"/>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal" >

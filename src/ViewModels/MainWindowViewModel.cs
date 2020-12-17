@@ -78,6 +78,12 @@ namespace FortiConnect.ViewModels
 			set => this.RaiseAndSetIfChanged(ref _isEnabledCopyEmail, value);
 		}
 
+		public bool _markVpnEmailAsRead;
+		public bool MarkVpnEmailAsRead {
+			get => _markVpnEmailAsRead;
+			set => this.RaiseAndSetIfChanged(ref _markVpnEmailAsRead, value);
+		}
+
 		private FortiConnector _fortiConnector { get; set; }
 		private AppSettings _appSettings { get; set; }
 		private AppSettingsWriter _appSettingsWriter { get; set; }
@@ -139,6 +145,7 @@ namespace FortiConnect.ViewModels
 			this.EmailProtocol = _appSettings?.EmailServer?.Protocol ?? EmailServerProtocol.Exchange;
 			this.EmailServer = _appSettings?.EmailServer?.Server;
 			this.EmailPort = _appSettings?.EmailServer?.Port ?? 993;
+			this.MarkVpnEmailAsRead = _appSettings?.EmailAccount?.MarkVpnEmailAsRead ?? true;
 			this.EmailProtocolOptions = Enum.GetValues(typeof(EmailServerProtocol)).Cast<EmailServerProtocol>()
 				.Where(p => p != EmailServerProtocol.MictrosoftGraph && p != EmailServerProtocol.Mapi); // Exclude not implemented options.
 		}
@@ -158,7 +165,7 @@ namespace FortiConnect.ViewModels
 		public void LoginToVpn()
 		{
 			var emailConfig = GetEmailConfig();
-			this.EmailVpnCode = _fortiConnector.Login(VpnPassword, emailConfig, _appSettings.EmailAccount.MarkVpnEmailAsRead);
+			this.EmailVpnCode = _fortiConnector.Login(VpnPassword, emailConfig, MarkVpnEmailAsRead);
 		}
 
 		public void GetEmailVpnCodeAndCopyToClipboard()
@@ -206,7 +213,7 @@ namespace FortiConnect.ViewModels
 				EmailAccount = new EmailAccountConfig {
 					 Email = this.EmailUserName
 					,Password = this.EmailPassword
-					,MarkVpnEmailAsRead = false
+					,MarkVpnEmailAsRead = this.MarkVpnEmailAsRead
 				},
 			};
 			_appSettingsWriter.Save(newAppSettings, fileName: Program.APPSETTINGS_AUTOSAVE_FILENAME);

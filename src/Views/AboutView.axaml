@@ -1,25 +1,33 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FortiConnect.Views.AboutView">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="420"
+			 x:Class="FortiConnect.Views.AboutView">
+
+	<UserControl.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="IsReadOnly" Value="True"/>
+		</Style>
+	</UserControl.Styles>
 
 	<Border Background="#000000">
 		<StackPanel Margin="5">
 			<TextBlock TextAlignment="Center" Text="About" Margin="0,0,0,8" FontSize="18"/>
 			<Image Source="/Assets/FortiConnect.ico" Width="140" Margin="0,0,0,10"/>
-			<TextBlock TextAlignment="Center">
+			<TextBox TextAlignment="Center">
 				Developed by A. Lazaro, 2020.
-			</TextBlock>
-			<TextBlock TextAlignment="Center" Text="{Binding GitVersion}" />
+			</TextBox>
+			<TextBox TextAlignment="Center" Text="{Binding GitVersion}"/>
 			<Button Background="Transparent" BorderThickness="0" Cursor="Hand" Foreground="Aqua" Command="{Binding OpenLinkLicense}">
 				MIT License
 			</Button>
 			<Button Background="Transparent" BorderThickness="0" Cursor="Hand" Foreground="Aqua" Command="{Binding OpenLinkGitHub}">
 				GitHub
 			</Button>
-			<Button Command="{Binding OnCloseView}" Margin="0,15,0,0">Ok</Button>
+			<Button Command="{Binding OnCloseView}" Margin="0,15,0,0" FontSize="18">OK</Button>
 		</StackPanel>
 	</Border>
 
