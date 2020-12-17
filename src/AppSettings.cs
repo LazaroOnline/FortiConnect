@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using FortiConnect.Models;
 
 namespace FortiConnect
 {
@@ -44,11 +45,4 @@ namespace FortiConnect
 		public bool MarkVpnEmailAsRead { get; set; } = false;
 	}
 	
-	public enum EmailServerProtocol
-	{
-		Imap,    // Default ports: 143 / 993 with SSL.
-		Pop3,    // Default ports: 110 / 995 with SSL.
-		Smtp,    // Default ports:  25 / 465 with SSL / 587 with TLS.
-		Exchange // Default ports:  25
-	}
 }

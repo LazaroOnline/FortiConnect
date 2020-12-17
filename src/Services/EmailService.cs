@@ -17,10 +17,10 @@ namespace FortiConnect.Services
 		{
 			switch(protocol) {
 				default:
-				case EmailServerProtocol.Exchange: return new EmailExchangeProvider();    // Splat.Locator.Current.GetService<EmailExchangeProvider>();
-				case EmailServerProtocol.Imap:     return new EmailImapMailkitProvider(); // Splat.Locator.Current.GetService<EmailImapMailkitProvider>();
-				case EmailServerProtocol.Pop3:     return new EmailImapMailkitProvider(); // Splat.Locator.Current.GetService<EmailImapMailkitProvider>();
-				case EmailServerProtocol.Smtp:     return new EmailImapMailkitProvider(); // Splat.Locator.Current.GetService<EmailImapMailkitProvider>();
+				case EmailServerProtocol.Exchange:        return new EmailExchangeProvider();       // Splat.Locator.Current.GetService<EmailExchangeProvider>();
+				case EmailServerProtocol.Imap:            return new EmailImapMailkitProvider();    // Splat.Locator.Current.GetService<EmailImapMailkitProvider>();
+				case EmailServerProtocol.MictrosoftGraph: return new EmailMicrosoftGraphProvider(); // Splat.Locator.Current.GetService<EmailMicrosoftGraphProvider>();
+			//	case EmailServerProtocol.Pop3:            return new EmailPop3Provider();           // Splat.Locator.Current.GetService<EmailPop3Provider>();
 			}
 		}
 	}

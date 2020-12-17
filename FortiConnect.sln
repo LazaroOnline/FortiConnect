@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3432A4BC-0E29-4803-AF52-76F005D66C7C}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		GitVersion.yml = GitVersion.yml
+		Icon.png = Icon.png
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -19,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{DAC13030-3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{72724539-ACA7-4D7A-B8CD-53404D4A8585}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{A6C1782F-8431-47B2-BE59-8CC8904A57CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{A6C1782F-8431-47B2-BE59-8CC8904A57CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

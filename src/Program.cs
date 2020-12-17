@@ -69,7 +69,6 @@ namespace FortiConnect
 				.LogToDebug()
 				.UseReactiveUI();
 
-		
 		// https://www.reactiveui.net/docs/handbook/dependency-inversion/
 		// https://dev.to/ingvarx/avaloniaui-dependency-injection-4aka
 		// Example: https://github.com/rbmkio/radish/blob/master/src/Rbmk.Radish/Program.cs

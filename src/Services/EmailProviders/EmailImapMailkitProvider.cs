@@ -15,7 +15,7 @@ namespace FortiConnect.Services
 		{
 			using (var client = GetClient(emailConfig))
 			{
-				var inbox = client.Inbox; // The Inbox folder is always available on all IMAP servers.
+				var inbox = client.Inbox; // The InBox folder is always available on all IMAP servers.
 				inbox.Open(FolderAccess.ReadOnly);
 				// var results = inbox.Search(SearchOptions.All, SearchQuery.Not(SearchQuery.Seen)); // Gets unread emails.
 				var results = inbox.Search(SearchOptions.All, SearchQuery.SubjectContains(EmailSubjectPrefix).And(SearchQuery.Not(SearchQuery.Seen)));
