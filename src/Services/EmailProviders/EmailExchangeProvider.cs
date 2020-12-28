@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using Microsoft.Exchange.WebServices.Data;
 using FortiConnect.Models;
+using FortiConnect.Utils;
 using System.Text.RegularExpressions;
 
 namespace FortiConnect.Services

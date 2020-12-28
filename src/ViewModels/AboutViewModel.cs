@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using FortiConnect.Services;
 using FortiConnect.Models;
+using FortiConnect.Utils;
 using ReactiveUI;
 using Splat;
 
@@ -29,12 +30,12 @@ namespace FortiConnect.ViewModels
 		
 		public void OpenLinkLicense()
 		{
-			Utils.OpenUrl(URL_LICENSE);
+			Util.OpenUrl(URL_LICENSE);
 		}
 
 		public void OpenLinkGitHub()
 		{
-			Utils.OpenUrl(URL_GITHUB);
+			Util.OpenUrl(URL_GITHUB);
 		}
 
 	}

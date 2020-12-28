@@ -18,6 +18,29 @@ namespace FortiConnect.Views
             this.AttachDevTools();
 #endif
 			//this.OnClosing += Closing;
+			
+			var vpnPasswordTextBox = this.FindControl<TextBox>("VpnPassword");
+			var toggleShowVpnPasswordButton = this.FindControl<Button>("ToggleShowVpnPassword");
+			var vpnPasswordHiddenChar = vpnPasswordTextBox.PasswordChar;
+			toggleShowVpnPasswordButton.Click += (o, e) => {
+				var isPasswordHidden = vpnPasswordTextBox.PasswordChar == vpnPasswordHiddenChar;
+				if (isPasswordHidden)
+					vpnPasswordTextBox.PasswordChar = '\0' ;
+				else
+					vpnPasswordTextBox.PasswordChar = vpnPasswordHiddenChar;
+			};
+			
+			var emailPasswordTextBox = this.FindControl<TextBox>("EmailPassword");
+			var toggleShowEmailPasswordButton = this.FindControl<Button>("ToggleShowEmailPassword");
+			var emailPasswordHiddenChar = emailPasswordTextBox.PasswordChar;
+			toggleShowEmailPasswordButton.Click += (o, e) => {
+				var isPasswordHidden = emailPasswordTextBox.PasswordChar == emailPasswordHiddenChar;
+				if (isPasswordHidden)
+					emailPasswordTextBox.PasswordChar = '\0' ;
+				else
+					emailPasswordTextBox.PasswordChar = emailPasswordHiddenChar;
+			};
+			
 		}
 
 		private void InitializeComponent()

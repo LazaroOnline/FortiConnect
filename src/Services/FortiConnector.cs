@@ -13,8 +13,11 @@ namespace FortiConnect.Services
 {
 	public class FortiConnector
 	{
-		public string FortiClientExeFullPath { get; set; } = @"C:\Program Files\Fortinet\FortiClient\FortiClient.exe";
-		public string FortiClientProcessName { get; set; } = @"FortiClient.exe";
+		public const string DEFAULT_FortiClientExeFullPath = @"C:\Program Files\Fortinet\FortiClient\FortiClient.exe";
+		public const string DEFAULT_FortiClientProcessName = @"FortiClient.exe";
+
+		public string FortiClientExeFullPath { get; set; } = DEFAULT_FortiClientExeFullPath;
+		public string FortiClientProcessName { get; set; } = DEFAULT_FortiClientProcessName;
 		public int DelayToSpawnFortiClientProcess { get; set; } = 2000;
 		private IEmailService _emailService { get; set; }
 		private IProcessWritterService _processWritterService { get; set; }

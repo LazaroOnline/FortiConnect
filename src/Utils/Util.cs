@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace FortiConnect.Services
+namespace FortiConnect.Utils
 {
-	public class Utils
+	public class Util
 	{
 		// https://stackoverflow.com/questions/4580263/how-to-open-in-default-browser-in-c-sharp/43232486#43232486
 		public static void OpenUrl(string url)
@@ -27,15 +27,15 @@ namespace FortiConnect.Services
 				if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 				{
 					url = url.Replace("&", "^&");
-					System.Diagnostics.Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+					Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
 				}
 				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 				{
-					System.Diagnostics.Process.Start("xdg-open", url);
+					Process.Start("xdg-open", url);
 				}
 				else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 				{
-					System.Diagnostics.Process.Start("open", url);
+					Process.Start("open", url);
 				}
 				else
 				{

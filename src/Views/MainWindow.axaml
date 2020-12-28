@@ -36,9 +36,12 @@
 
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="VPN Password" VerticalAlignment="Center"/>
-				<TextBox MinWidth="165" Text="{Binding VpnPassword}" PasswordChar="•" />
+				<TextBox MinWidth="170" x:Name="VpnPassword" Text="{Binding VpnPassword}" PasswordChar="•" />
+				<Button x:Name="ToggleShowVpnPassword" BorderBrush="Gray">
+					<Image Source="/Assets/images/show.png" Width="20" ></Image>
+				</Button>
 				<Button Command="{Binding OnOpenAboutWindow}" Margin="5,0,0,0" Background="Gray" BorderThickness="0" Cursor="Hand" >
-					<Image Source="/Assets/images/about-black.png" Width="22" ></Image>
+					<Image Source="/Assets/images/about.png" Width="22" ></Image>
 				</Button>
 			</StackPanel>
 
@@ -64,7 +67,10 @@
 
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="Email Password" VerticalAlignment="Center" />
-				<TextBox Text="{Binding EmailPassword}" PasswordChar="•" />
+				<TextBox MinWidth="170" x:Name="EmailPassword" Text="{Binding EmailPassword}" PasswordChar="•" />
+				<Button x:Name="ToggleShowEmailPassword" BorderBrush="Gray">
+					<Image Source="/Assets/images/show.png" Width="20" ></Image>
+				</Button>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal" ToolTip.Tip="Mark VPN emails as read after processing." >
@@ -75,7 +81,7 @@
 			<StackPanel Orientation="Horizontal" >
 				<TextBlock Width="100" Text="Email Vpn Code" VerticalAlignment="Center" />
 				<TextBox   MinWidth="160" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
-				<Button    Width="40" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" FontSize="10" Margin="0,0,0,0">Copy</Button>
+				<Button    Width="40" Height="29" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" FontSize="11" Margin="0,0,0,0" BorderBrush="Gray">Copy</Button>
 			</StackPanel>
 
 			<StackPanel Orientation="Vertical" >

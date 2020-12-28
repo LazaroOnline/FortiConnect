@@ -80,23 +80,23 @@ namespace FortiConnect
 
 		public static void RegisterServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver, IConfiguration config)
 		{
-			var appSettings = config.Get<AppSettings>();
+			var appSettings = config.Get<AppSettings>() ?? new AppSettings();
 
 			// Splat.Locator.CurrentMutable.Register<EmailService>(() => new EmailExchangeService());
 
 			services.Register<AppSettings>(() => config.Get<AppSettings>());
 			services.Register<AppSettingsWriter>(() => new AppSettingsWriter());
 			services.Register<IEmailService>(() => new EmailService());
-			services.Register<IProcessWritterService>(() => new ProcessWritterService() { DelayToShowWindow = appSettings.DelayToShowVpnClient});
+			services.Register<IProcessWritterService>(() => new ProcessWritterService() { DelayToShowWindow = appSettings?.DelayToShowVpnClient ?? AppSettings.DEFAULT_DelayToShowVpnClient});
 
 			services.RegisterLazySingleton<FortiConnector>(() => {
 				var emailService = resolver.GetService<IEmailService>();
 				var processWritterService = resolver.GetService<IProcessWritterService>();
 				var fortiConnector = new FortiConnector(emailService, processWritterService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
-				if (!string.IsNullOrWhiteSpace(appSettings.FortiClient.ExeFullPath)) {
+				if (!string.IsNullOrWhiteSpace(appSettings?.FortiClient?.ExeFullPath)) {
 					fortiConnector.FortiClientExeFullPath = appSettings.FortiClient.ExeFullPath;
 				}
-				if (!string.IsNullOrWhiteSpace(appSettings.FortiClient.ProcessName)) {
+				if (!string.IsNullOrWhiteSpace(appSettings?.FortiClient?.ProcessName)) {
 					fortiConnector.FortiClientProcessName = appSettings.FortiClient.ProcessName;
 				}
 				fortiConnector.DelayToSpawnFortiClientProcess = appSettings.DelayToSpawnFortiClientProcess;

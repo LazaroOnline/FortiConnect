@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace FortiConnect.Services
+namespace FortiConnect.Utils
 {
 	// TODO: create a NuGet package with this Retry class.
 	public class Retry
