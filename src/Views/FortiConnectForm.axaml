@@ -75,13 +75,18 @@
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Email Vpn Code" VerticalAlignment="Center" />
-				<TextBox   MinWidth="160" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
-				<Button    Width="40" Height="29" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" FontSize="11" Margin="0,0,0,0" BorderBrush="Gray">Copy</Button>
+				<TextBlock Width="100" Text="Vpn Email Code" VerticalAlignment="Center" />
+				<TextBox   MinWidth="170" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
+				<Button    Width="28" Height="29" FontSize="11" BorderBrush="Gray" Background="Gray" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}">
+					<Image Source="/Assets/images/copy.png" Width="26"></Image>
+				</Button>
+				<Button Command="{Binding OnGetEmailVpnCodeCommand}" FontSize="14" Margin="5,0,0,0"
+					ToolTip.Tip="Get the VPN confirmation code from your emails. This step is already included in the main 'Connect to VPN' functionality">
+					Get
+				</Button>
 			</StackPanel>
 
 			<StackPanel Orientation="Vertical" >
-				<Button Command="{Binding OnGetEmailVpnCodeCommand}" FontSize="17" Margin="0,5,0,5">Get VPN Email Code</Button>
 				<Button Command="{Binding OnConnectToVpnCommand}"    FontSize="20" Margin="0,5,0,0">Connect to VPN</Button>
 			</StackPanel>
 
