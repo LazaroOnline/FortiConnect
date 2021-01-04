@@ -45,14 +45,14 @@ namespace FortiConnect
 			RegisterServices(config);
 
 			if (args.Any(arg => IsCommandArgument(arg, AppCommand.GetEmailVpnCode))) {
-				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
+				var viewModel = Splat.Locator.Current.GetService<FortiConnectFormViewModel>();
 				var emailVpnCode = viewModel.GetEmailVpnCode();
 				Console.WriteLine($"Email VPN Code: {emailVpnCode}");
 				return;
 			}
 			
 			if (args.Any(arg => IsCommandArgument(arg, AppCommand.LoginToVpn))) {
-				var viewModel = Splat.Locator.Current.GetService<MainWindowViewModel>();
+				var viewModel = Splat.Locator.Current.GetService<FortiConnectFormViewModel>();
 				viewModel.LoginToVpn();
 				Console.WriteLine($"Done.");
 				return;
@@ -103,9 +103,9 @@ namespace FortiConnect
 				return fortiConnector;
 			});
 			
-			services.RegisterLazySingleton<MainWindowViewModel>(() => {
-				var mainWindowViewModel = new MainWindowViewModel();
-				return mainWindowViewModel;
+			services.RegisterLazySingleton<FortiConnectFormViewModel>(() => {
+				var fortiConnectFormViewModel = new FortiConnectFormViewModel();
+				return fortiConnectFormViewModel;
 			});
 		}
 

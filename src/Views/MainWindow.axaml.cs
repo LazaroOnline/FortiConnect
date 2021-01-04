@@ -27,7 +27,7 @@ namespace FortiConnect.Views
 		{
 			base.OnClosing(e);
 			var fortiConnectForm = this.FindControl<FortiConnectForm>("FortiConnectForm");
-			var viewModel = (MainWindowViewModel)fortiConnectForm.DataContext;
+			var viewModel = (FortiConnectFormViewModel)fortiConnectForm.DataContext;
 			viewModel.SaveConfig();
 		}
 

@@ -13,7 +13,7 @@ using Splat;
 
 namespace FortiConnect.ViewModels
 {
-	public class MainWindowViewModel : ViewModelBase
+	public class FortiConnectFormViewModel : ViewModelBase
 	{
 		private const string URL_LICENSE = "https://opensource.org/licenses/MIT";
 		private const string URL_GITHUB = "https://github.com/LazaroOnline/FortiConnect";
@@ -99,11 +99,11 @@ namespace FortiConnect.ViewModels
 		public ReactiveCommand<Unit, Unit> OnCloseMessagePopup { get; }
 
 		// Constructor required by the designer tools.
-		public MainWindowViewModel()
+		public FortiConnectFormViewModel()
 			: this(null, null, null) // Call the other constructor
 		{ }
 
-		public MainWindowViewModel(
+		public FortiConnectFormViewModel(
 			  FortiConnector fortiConnector
 			 ,AppSettings appSettings
 			 ,AppSettingsWriter appSettingsWriter
