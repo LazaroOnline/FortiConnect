@@ -12,21 +12,21 @@ The configuration is stored in a file named `AppSettings.json` placed next to th
 Another config file is `AppSettings.AutoSave.json` which contains only the part of the config that can be edited from the UI,
 and overrides the other config files when a value is present.
 
- Config parameter                     | Description
---------------------------------------|---------------------------------------------------------------
- FortiClient > ExeFullPath            | Path to the installed FortiClient.
- FortiClient > ProcessName            | Name of the FortiClient executable.
- Vpn > Password                       | Your personal VPN user password.
- Vpn > LoginPasswordFocusSequence     | Keystroke sequence\* used after launching FotiClient, to set the password textbox into focus. It can be used to change the VPN configuration dropdown by using for example `"LoginPasswordFocusSequence": "{TAB}{TAB}{DOWN}{TAB}{TAB}"`, or set/change the username with `"{TAB}{TAB}{TAB}MyUserName{TAB}"`.
- Vpn > LoginVerificationFocusSequence | Keystroke sequence\* used after entering the vpn password, to set the confirmation code textbox into focus.
- EmailServer > Protocol               | Protocol used to connect to your email.
- EmailServer > Server                 | Name of the server or url used to connect, ie: `imap.mycompany.com`, `pop.mycompany.com` or Exchange URL in case your company is not using the default `https://mail.{companyDomain}/EWS/Exchange.asmx`.
- EmailServer > Port                   | Port used to connect to the email.
- EmailAccount > Email                 | Email account ie: your-email@company.com
- EmailAccount > Password              | Email password.
- EmailAccount > MarkVpnEmailAsRead    | Set to true to mark the vpn email as "read" in your mailbox.
- DelayToSpawnFortiClientProcess       | Time in milliseconds to wait for a newly created FortiClient process to load it's UI before sending keystrokes to write to it.
- DelayToShowVpnClient                 | Time in milliseconds to wait for the Operating System to show and bring to the front the FortiClient window before sending keystrokes to write to it.
+ Config parameter                             | Description
+----------------------------------------------|---------------------------------------------------------------------------------
+ FortiClient > ExeFullPath                    | Path to the installed FortiClient.
+ FortiClient > ProcessName                    | Name of the FortiClient executable.
+ FortiClient > LoginPasswordFocusSequence     | Keystroke sequence\* used after launching FotiClient, to set the password textbox into focus. It can be used to change the VPN configuration dropdown by using for example `"LoginPasswordFocusSequence": "{TAB}{TAB}{DOWN}{TAB}{TAB}"`, or set/change the username with `"{TAB}{TAB}{TAB}MyUserName{TAB}"`.
+ FortiClient > LoginVerificationFocusSequence | Keystroke sequence\* used after entering the vpn password, to set the confirmation code textbox into focus.
+ Vpn > Password                               | Your personal VPN user password.
+ EmailServer > Protocol                       | Protocol used to connect to your email.
+ EmailServer > Server                         | Name of the server or url used to connect, ie: `imap.mycompany.com`, `pop.mycompany.com` or Exchange URL in case your company is not using the default `https://mail.{companyDomain}/EWS/Exchange.asmx`.
+ EmailServer > Port                           | Port used to connect to the email.
+ EmailAccount > Email                         | Email account ie: your-email@company.com
+ EmailAccount > Password                      | Email password.
+ EmailAccount > MarkVpnEmailAsRead            | Set to true to mark the vpn email as "read" in your mailbox.
+ DelayToSpawnFortiClientProcess               | Time in milliseconds to wait for a newly created FortiClient process to load it's UI before sending keystrokes to write to it.
+ DelayToShowVpnClient                         | Time in milliseconds to wait for the Operating System to show and bring to the front the FortiClient window before sending keystrokes to write to it.
 
 > \* **Keystroke sequences**:  
 > Leave not set or null to use the default sequence corresponding to your installed FortiClient version.  
