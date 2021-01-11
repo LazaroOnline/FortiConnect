@@ -28,6 +28,8 @@ namespace FortiConnect
 	{
 		public string ExeFullPath { get; set; }
 		public string ProcessName { get; set; }
+		public string LoginPasswordFocusSequence { get; set; }
+		public string LoginVerificationFocusSequence { get; set; }
 	}
 	
 	//[JsonConverter(typeof(VpnConfigConverter))] // This makes attribute here would make an infinite loop.

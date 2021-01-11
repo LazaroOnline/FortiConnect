@@ -93,6 +93,8 @@ namespace FortiConnect
 				var emailService = resolver.GetService<IEmailService>();
 				var processWritterService = resolver.GetService<IProcessWritterService>();
 				var fortiConnector = new FortiConnector(emailService, processWritterService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
+				fortiConnector.LoginPasswordFocusSequence = appSettings?.FortiClient?.LoginPasswordFocusSequence;
+				fortiConnector.LoginVerificationFocusSequence = appSettings?.FortiClient?.LoginVerificationFocusSequence;
 				if (!string.IsNullOrWhiteSpace(appSettings?.FortiClient?.ExeFullPath)) {
 					fortiConnector.FortiClientExeFullPath = appSettings.FortiClient.ExeFullPath;
 				}

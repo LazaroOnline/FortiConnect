@@ -58,6 +58,50 @@ namespace FortiConnect.Services
 		{
 			public const string ENTER = "{ENTER}";
 			public const string TAB = "{TAB}";
+
+			public const string CAPS_LOCK = "{CAPSLOCK}";
+			public const string BACKSPACE = "{BACKSPACE}";
+			public const string DELETE = "{DELETE}";
+			public const string HELP = "{HELP}";
+			public const string INSERT = "{INSERT}";
+			public const string NUMLOCK = "{NUMLOCK}";
+			public const string PRTSC = "{PRTSC}";
+			public const string SCROLLLOCK = "{SCROLLLOCK}";
+			public const string BREAK = "{BREAK}";
+
+			public const string PAGE_UP = "{PGUP}";
+			public const string PAGE_DOWN = "{PGDN}";
+			public const string HOME = "{HOME}";
+			public const string END = "{END}";
+			public const string ESCAPE = "{ESC}";
+
+			public const string ADD = "{ADD}";
+			public const string SUBTRACT = "{SUBTRACT}";
+			public const string MULTIPLY = "{MULTIPLY}";
+			public const string DIVIDE = "{DIVIDE}";
+
+			public const string F1  = "{F1}";
+			public const string F2  = "{F2}";
+			public const string F3  = "{F3}";
+			public const string F4  = "{F4}";
+			public const string F5  = "{F5}";
+			public const string F6  = "{F6}";
+			public const string F7  = "{F7}";
+			public const string F8  = "{F8}";
+			public const string F9  = "{F9}";
+			public const string F10 = "{F10}";
+			public const string F11 = "{F11}";
+			public const string F12 = "{F12}";
+			public const string F13 = "{F13}";
+			public const string F14 = "{F14}";
+			public const string F15 = "{F15}";
+			public const string F16 = "{F16}";
+
+			public const string ARROW_UP = "{UP}";
+			public const string ARROW_DOWN = "{DOWN}";
+			public const string ARROW_LEFT = "{LEFT}";
+			public const string ARROW_RIGHT = "{RIGHT}";
+			
 			public const string SHIFT = "+";
 			public const string ALT = "%";
 			public const string CONTROL = "^";
