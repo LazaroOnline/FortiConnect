@@ -6,7 +6,6 @@ using Splat;
 using ReactiveUI;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Avalonia.Logging.Serilog;
 using FortiConnect;
 using FortiConnect.Models;
 using FortiConnect.ViewModels;

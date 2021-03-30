@@ -31,7 +31,7 @@ namespace FortiConnect.Services
 
 			EmailMessage mostRecentVpnEmailMessage = null;
 			Retry.Action((r) => {
-					mostRecentVpnEmailMessage = GetVpnEmail(client);
+					mostRecentVpnEmailMessage = GetVpnEmail(client, emailConfig?.EmailSubjectPrefix, emailConfig?.InboxSubFolderNameWithVpnEmails);
 				}
 				,whileIs: (r) => mostRecentVpnEmailMessage == null
 				,maxRetries: 3
@@ -50,19 +50,19 @@ namespace FortiConnect.Services
 				// client.UpdateItems(new List<EmailMessage> { mostRecentVpnEmailMessage }, folderIdVpn, ConflictResolutionMode.AutoResolve, MessageDisposition.SaveOnly, SendInvitationsOrCancellationsMode.SendToNone);
 			}
 
-			var vpnCode = ExtractVpnCodeFromEmailSubject(mostRecentVpnEmailMessage?.Subject);
+			var vpnCode = ExtractVpnCodeFromEmailSubject(mostRecentVpnEmailMessage?.Subject, emailConfig?.EmailSubjectPrefix);
 			return vpnCode;
 		}
 
-		public EmailMessage GetVpnEmail(ExchangeService client)
+		public EmailMessage GetVpnEmail(ExchangeService client, string emailSubjectPrefix, string inboxSubFolderNameWithVpnEmails = null)
 		{
-			Folder vpnFolder = GetVpnFolder(client);
+			Folder vpnFolder = GetVpnFolder(client, inboxSubFolderNameWithVpnEmails);
 			
 			// Searching emails into a specific folder:
 			// FindItemsResults<Item> emailsInVpnFolder = client.FindItems("MyEmailFolder", subjectFilter, folderView); // This throws an exception, the folder ID is not the folder name but some kind of GUID, throws exception.
 
 			// https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-use-search-filters-with-ews-in-exchange
-			var subjectFilterBySubject = new SearchFilter.ContainsSubstring(ItemSchema.Subject, $"{EmailSubjectPrefix}", ContainmentMode.Substring, ComparisonMode.IgnoreCase);
+			var subjectFilterBySubject = new SearchFilter.ContainsSubstring(ItemSchema.Subject, $"{emailSubjectPrefix}", ContainmentMode.Substring, ComparisonMode.IgnoreCase);
 			var searchFilterUnread = new SearchFilter.IsEqualTo(EmailMessageSchema.IsRead, false);
 			var searchFilterRecentDate = new SearchFilter.IsGreaterThan(EmailMessageSchema.DateTimeReceived, DateTime.UtcNow.AddMinutes(-30));
 			var searchFilterNewVpnCode = new SearchFilter.SearchFilterCollection(LogicalOperator.And, searchFilterUnread, subjectFilterBySubject, searchFilterRecentDate);
@@ -76,15 +76,19 @@ namespace FortiConnect.Services
 			return mostRecentVpnEmailMessage;
 		}
 		
-		public Folder GetVpnFolder(ExchangeService client)
+		public Folder GetVpnFolder(ExchangeService client, string inboxSubFolderNameWithVpnEmails = null)
 		{
+			var defaultFolder = Folder.Bind(client, WellKnownFolderName.Inbox);
+			if (string.IsNullOrEmpty(inboxSubFolderNameWithVpnEmails)) {
+				return defaultFolder;
+			}
 			// https://stackoverflow.com/questions/7912584/exchange-web-service-folderid-for-a-not-well-known-folder-name
 			// var folderIdVpn = new FolderId(InboxSubFolderNameWithVpnEmails);
 
 			var folderView = new FolderView(pageSize: 5);
 			folderView.Traversal = FolderTraversal.Deep; // Allows search in nested folders.
 
-			var searchFilterVpnFolder = new SearchFilter.IsEqualTo(FolderSchema.DisplayName, InboxSubFolderNameWithVpnEmails);
+			var searchFilterVpnFolder = new SearchFilter.IsEqualTo(FolderSchema.DisplayName, inboxSubFolderNameWithVpnEmails);
 			var vpnFolders = client.FindFolders(WellKnownFolderName.Inbox, searchFilterVpnFolder, folderView);
 
 			Folder vpnFolder = null;
@@ -96,7 +100,7 @@ namespace FortiConnect.Services
 			}
 			else
 			{
-				vpnFolder = Folder.Bind(client, WellKnownFolderName.Inbox);
+				vpnFolder = defaultFolder;
 			}
 			return vpnFolder;
 		}

@@ -9,12 +9,9 @@ namespace FortiConnect.Services
 {
 	public abstract class EmailProviderBase
 	{
-		public string EmailSubjectPrefix { get; set; } = "AuthCode: ";
-		public string InboxSubFolderNameWithVpnEmails { get; set; } = "Vpn"; // "Inbox/Accounts/Vpn"
-
-		public string ExtractVpnCodeFromEmailSubject(string emailSubject)
+		public string ExtractVpnCodeFromEmailSubject(string emailSubject, string emailSubjectPrefix)
 		{
-			return emailSubject?.Replace(EmailSubjectPrefix, "").Trim();
+			return emailSubject?.Replace(emailSubjectPrefix, "").Trim();
 		}
 		
 		public abstract string GetLastVpnEmailCode(EmailConfig emailConfig, bool markAsRead);

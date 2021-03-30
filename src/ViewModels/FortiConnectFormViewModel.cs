@@ -160,6 +160,8 @@ namespace FortiConnect.ViewModels
 				,UserEmail = EmailUserName
 				,UserPassword = EmailPassword
 				,UseSsl = true
+				,EmailSubjectPrefix = _appSettings?.Vpn?.EmailSubjectPrefix
+				,InboxSubFolderNameWithVpnEmails = _appSettings?.EmailAccount?.InboxSubFolderNameWithVpnEmails
 			};
 		}
 

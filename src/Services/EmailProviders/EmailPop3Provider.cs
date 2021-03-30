@@ -26,7 +26,7 @@ namespace FortiConnect.Services
 					// Mark message as read
 				}
 				client.Disconnect(true);
-				var vpnCode = ExtractVpnCodeFromEmailSubject(emailSubject);
+				var vpnCode = ExtractVpnCodeFromEmailSubject(emailSubject, emailConfig?.EmailSubjectPrefix);
 				return vpnCode;
 			}
 		}

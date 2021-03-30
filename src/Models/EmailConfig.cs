@@ -12,5 +12,8 @@ namespace FortiConnect.Models
 		public bool UseSsl { get; set; } = true;
 		public string UserEmail { get; set; }
 		public string UserPassword { get; set; }
+
+		public string EmailSubjectPrefix { get; set; }
+		public string InboxSubFolderNameWithVpnEmails { get; set; }
 	}
 }

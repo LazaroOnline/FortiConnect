@@ -35,6 +35,8 @@ namespace FortiConnect
 	//[JsonConverter(typeof(VpnConfigConverter))] // This makes attribute here would make an infinite loop.
 	public class VpnConfig
 	{
+		public const string DEFAULT_EmailSubjectPrefix = "AuthCode: ";
+
 		// FortiClient already stores the UserName.
 		public string UserName { get; set; }
 
@@ -45,21 +47,25 @@ namespace FortiConnect
 			get { return Base64Converter.ConvertTextUnicodeToBase64(this.Password); }
 			set { this.Password = Base64Converter.ConvertBase64ToTextUnicode(value); }
 		}
+		public string EmailSubjectPrefix { get; set; } = DEFAULT_EmailSubjectPrefix;
 	}
 	
 	public class EmailServerConfig
 	{
 		public const int DEFAULT_PORT_IMAP = 993;
-
+		
 		[JsonConverter(typeof(JsonStringEnumConverter))]
 		public EmailServerProtocol Protocol { get; set; } = EmailServerProtocol.Exchange;
 		public string Server { get; set; }
 		public int Port { get; set; } = DEFAULT_PORT_IMAP;
+
 	}
 
 	//[JsonConverter(typeof(EmailAccountConfigConverter))] // This makes attribute here would make an infinite loop.
 	public class EmailAccountConfig
 	{
+		public const string DEFAULT_InboxSubFolderNameWithVpnEmails = "Vpn";
+
 		public string Email { get; set; }
 		//[JsonIgnore] // This would also prevent reading the property, not just writing it.
 		//[JsonConverter(typeof(JsonIgnoreWriteAsNull<string>))] // This can't prevent the property name from being written.
@@ -69,6 +75,7 @@ namespace FortiConnect
 			set { this.Password = Base64Converter.ConvertBase64ToTextUnicode(value); }
 		}
 		public bool MarkVpnEmailAsRead { get; set; } = false;
+		public string InboxSubFolderNameWithVpnEmails { get; set; } = DEFAULT_InboxSubFolderNameWithVpnEmails;
 	}
 
 }
