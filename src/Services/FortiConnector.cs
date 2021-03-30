@@ -19,6 +19,7 @@ namespace FortiConnect.Services
 		public string FortiClientExeFullPath { get; set; } = DEFAULT_FortiClientExeFullPath;
 		public string FortiClientProcessName { get; set; } = DEFAULT_FortiClientProcessName;
 		public int DelayToSpawnFortiClientProcess { get; set; } = 2000;
+		public int DelayToFetchVpnCodeEmail { get; set; } = 200;
 
 		/// <summary>If set, it will override the keystroke sequence used to set the login password into focus.</summary>
 		public string LoginPasswordFocusSequence { get; set; }
@@ -53,6 +54,7 @@ namespace FortiConnect.Services
 			var loginKeystrokes = GetLoginKeystrokes(vpnUserPass);
 			_processWritterService.WriteToProcess(process, loginKeystrokes);
 
+			Thread.Sleep(DelayToFetchVpnCodeEmail);
 			var vpnEmailCode =_emailService.GetLastVpnEmailCode(emailConfig, markEmailAsRead);
 			var loginConfirmationKeystrokes = GetLoginConfirmationKeystrokes(vpnEmailCode);
 			_processWritterService.WriteToProcess(process, loginConfirmationKeystrokes);
@@ -138,7 +140,7 @@ namespace FortiConnect.Services
 			}
 			// FortiClient spawns another 2 processes to render its UI, taking longer in a separate process.
 			Thread.Sleep(delayToSpawnFortiClientProcess ?? DelayToSpawnFortiClientProcess);
-
+			
 			return fortiClientProcess;
 		}
 

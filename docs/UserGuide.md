@@ -29,6 +29,8 @@ and overrides the other config files when a value is present.
  EmailAccount > InboxSubFolderNameWithVpnEmails | Name of the Email folder where the VPN emails get stored in case you have an email rule to organize them. Defaults to "VPN", but it will also look in the "inbox".
  DelayToSpawnFortiClientProcess                 | Time in milliseconds to wait for a newly created FortiClient process to load it's UI before sending keystrokes to write to it.
  DelayToShowVpnClient                           | Time in milliseconds to wait for the Operating System to show and bring to the front the FortiClient window before sending keystrokes to write to it.
+ DelayToFetchVpnCodeEmail                       | Time in milliseconds to wait for the vpn email to be received during login before checking for emails the first time, if it fails it may try a couple of times before failing. Defaults to 200.
+
 
 > \* **Keystroke sequences**:  
 > Leave not set or null to use the default sequence corresponding to your installed FortiClient version.  

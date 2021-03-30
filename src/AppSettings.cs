@@ -14,6 +14,7 @@ namespace FortiConnect
 	{
 		public const int DEFAULT_DelayToShowVpnClient = 2000;
 		public const int DEFAULT_DelayToSpawnFortiClientProcess = 2000;
+		public const int DEFAULT_DelayToFetchVpnCodeEmail = 200;
 
 		//[Required]
 		public FortiClientConfig FortiClient { get; set; }
@@ -22,6 +23,7 @@ namespace FortiConnect
 		public EmailAccountConfig EmailAccount { get; set; }
 		public int DelayToShowVpnClient { get; set; } = DEFAULT_DelayToShowVpnClient;
 		public int DelayToSpawnFortiClientProcess { get; set; } = DEFAULT_DelayToSpawnFortiClientProcess;
+		public int DelayToFetchVpnCodeEmail { get; set; } = DEFAULT_DelayToFetchVpnCodeEmail;
 	}
 	
 	public class FortiClientConfig
