@@ -56,6 +56,7 @@ namespace FortiConnect.Services
 
 			Thread.Sleep(DelayToFetchVpnCodeEmail);
 			var vpnEmailCode =_emailService.GetLastVpnEmailCode(emailConfig, markEmailAsRead);
+			Console.Beep(100, 300); // Provide some feedback to the user so they know the process stopped trying to get the email.
 			var loginConfirmationKeystrokes = GetLoginConfirmationKeystrokes(vpnEmailCode);
 			_processWritterService.WriteToProcess(process, loginConfirmationKeystrokes);
 

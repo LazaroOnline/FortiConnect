@@ -34,8 +34,8 @@ namespace FortiConnect.Services
 					mostRecentVpnEmailMessage = GetVpnEmail(client, emailConfig?.EmailSubjectPrefix, emailConfig?.InboxSubFolderNameWithVpnEmails);
 				}
 				,whileIs: (r) => mostRecentVpnEmailMessage == null
-				,maxRetries: 3
-				,every: TimeSpan.FromSeconds(3)
+				,maxRetries: emailConfig?.GetEmailMaxRetries ?? EmailConfig.DEFAULT_GetEmailMaxRetries
+				,every: TimeSpan.FromMilliseconds(emailConfig?.GetEmailRetryEveryMilliseconds ?? EmailConfig.DEFAULT_GetEmailRetryEveryMilliseconds)
 			);
 
 			if (mostRecentVpnEmailMessage == null) {
@@ -67,7 +67,7 @@ namespace FortiConnect.Services
 			var searchFilterRecentDate = new SearchFilter.IsGreaterThan(EmailMessageSchema.DateTimeReceived, DateTime.UtcNow.AddMinutes(-30));
 			var searchFilterNewVpnCode = new SearchFilter.SearchFilterCollection(LogicalOperator.And, searchFilterUnread, subjectFilterBySubject, searchFilterRecentDate);
 			var emailView = new ItemView(pageSize: 5);
-			var vpnEmails = vpnFolder.FindItems(searchFilterNewVpnCode, emailView);
+			var vpnEmails = vpnFolder.FindItems(searchFilterNewVpnCode, emailView).OrderByDescending(e => e.DateTimeSent);
 			var mostRecentVpnEmailItem = vpnEmails.FirstOrDefault();
 			if (mostRecentVpnEmailItem?.Id == null) {
 				return null;

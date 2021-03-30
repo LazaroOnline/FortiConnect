@@ -162,6 +162,8 @@ namespace FortiConnect.ViewModels
 				,UseSsl = true
 				,EmailSubjectPrefix = _appSettings?.Vpn?.EmailSubjectPrefix
 				,InboxSubFolderNameWithVpnEmails = _appSettings?.EmailAccount?.InboxSubFolderNameWithVpnEmails
+				,GetEmailRetryEveryMilliseconds = _appSettings?.GetEmailRetryEveryMilliseconds
+				,GetEmailMaxRetries = _appSettings?.GetEmailMaxRetries
 			};
 		}
 
@@ -207,6 +209,7 @@ namespace FortiConnect.ViewModels
 				Vpn = new VpnConfig {
 					 UserName = this.VpnUserName
 					,Password = this.VpnPassword
+					,EmailSubjectPrefix = null
 				},
 				EmailServer = new EmailServerConfig {
 					 Protocol = this.EmailProtocol
@@ -217,7 +220,13 @@ namespace FortiConnect.ViewModels
 					 Email = this.EmailUserName
 					,Password = this.EmailPassword
 					,MarkVpnEmailAsRead = this.MarkVpnEmailAsRead
-				},
+					,InboxSubFolderNameWithVpnEmails = null
+				}
+				,DelayToShowVpnClient = null
+				,DelayToSpawnFortiClientProcess = null
+				,DelayToFetchVpnCodeEmail = null
+				,GetEmailRetryEveryMilliseconds = null
+				,GetEmailMaxRetries = null
 			};
 			_appSettingsWriter.Save(newAppSettings, fileName: Program.APPSETTINGS_AUTOSAVE_FILENAME);
 		}

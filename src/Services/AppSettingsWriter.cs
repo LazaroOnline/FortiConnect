@@ -17,6 +17,7 @@ namespace FortiConnect.Services
 	public class AppSettingsWriter
 	{
 		public const string DEFAULT_FILENAME = "AppSettings.AutoSave.json";
+
 		public void Save(AppSettings appSettings, string fileName = DEFAULT_FILENAME)
 		{
 			var executingAssembly = Assembly.GetExecutingAssembly();

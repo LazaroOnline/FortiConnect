@@ -26,11 +26,14 @@ and overrides the other config files when a value is present.
  EmailAccount > Email                           | Email account ie: your-email@company.com
  EmailAccount > Password                        | Email password.
  EmailAccount > MarkVpnEmailAsRead              | Set to true to mark the vpn email as "read" in your mailbox.
- EmailAccount > InboxSubFolderNameWithVpnEmails | Name of the Email folder where the VPN emails get stored in case you have an email rule to organize them. Defaults to "VPN", but it will also look in the "inbox".
+ EmailAccount > InboxSubFolderNameWithVpnEmails | Name of the Email folder where the VPN emails get stored in case you have an email rule to organize them. Defaults to "Vpn", if no folder exist in your email with that name (case insensitive), then it will look in the "inbox" (but not recursively).
  DelayToSpawnFortiClientProcess                 | Time in milliseconds to wait for a newly created FortiClient process to load it's UI before sending keystrokes to write to it.
  DelayToShowVpnClient                           | Time in milliseconds to wait for the Operating System to show and bring to the front the FortiClient window before sending keystrokes to write to it.
  DelayToFetchVpnCodeEmail                       | Time in milliseconds to wait for the vpn email to be received during login before checking for emails the first time, if it fails it may try a couple of times before failing. Defaults to 200.
+ GetEmailRetryEveryMilliseconds                 | Time in milliseconds to wait between retries when getting the vpn email verification code.
+ GetEmailMaxRetries                             | Number of times the app will try to get the vpn email verification code during login.
 
+> If you are using email rules to move the VPN emails, then make sure to configure the email folder name in: `EmailAccount > InboxSubFolderNameWithVpnEmails`.
 
 > \* **Keystroke sequences**:  
 > Leave not set or null to use the default sequence corresponding to your installed FortiClient version.  
@@ -47,7 +50,8 @@ and overrides the other config files when a value is present.
 It will open a FortiClient window, or reuse the existing one if already open,
 then it will bring the window to the front active window and automatically enter your VPN password. 
 The VPN user's name is not entered because FortiClient can be set to remember it.  
-After that it will search your emails looking for the 2-Factor-Authentication email with the one-time VPN code and write it back in the FortiClient app.
+After that it will search your emails looking for the 2-Factor-Authentication email with the one-time VPN code and write it back in the FortiClient app.  
+A beep sound will indicate that the app finished trying to fetch the email, this is usefull when running the app without UI.
 
 > It is important not to interact with the computer while this app is connecting to the VPN or otherwise it may not work.  
 > This is due to the nature of the technology used to automate the connection,

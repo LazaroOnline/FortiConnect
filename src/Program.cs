@@ -101,10 +101,10 @@ namespace FortiConnect
 					fortiConnector.FortiClientProcessName = appSettings.FortiClient.ProcessName;
 				}
 				if (appSettings?.DelayToSpawnFortiClientProcess != null) {
-					fortiConnector.DelayToSpawnFortiClientProcess = appSettings.DelayToSpawnFortiClientProcess;
+					fortiConnector.DelayToSpawnFortiClientProcess = appSettings.DelayToSpawnFortiClientProcess.Value;
 				}
 				if (appSettings?.DelayToFetchVpnCodeEmail != null) {
-					fortiConnector.DelayToFetchVpnCodeEmail = appSettings.DelayToFetchVpnCodeEmail;
+					fortiConnector.DelayToFetchVpnCodeEmail = appSettings.DelayToFetchVpnCodeEmail.Value;
 				}
 				return fortiConnector;
 			});
