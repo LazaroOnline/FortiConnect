@@ -1,18 +1,21 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
-			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			xmlns:local="clr-namespace:FortiConnect"
-			x:Class="FortiConnect.App">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="clr-namespace:FortiConnect"
+			 x:Class="FortiConnect.App">
 	<Application.DataTemplates>
 		<local:ViewLocator/>
 	</Application.DataTemplates>
 
 	<Application.Styles>
-		<!--<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>-->
-		<!--<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>-->
-
-		<!-- https://avaloniaui.net/blog/2019-04-05-avalonia-0.8-release#dark-theme -->
-		<!-- https://github.com/AvaloniaUI/Avalonia/pull/2078 -->
-		<StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
-		<StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default"/>
-    </Application.Styles>
+		<!--<FluentTheme Mode="Dark"/>
+		https://github.com/AvaloniaUI/Avalonia/wiki/Breaking-Changes#avaloniathemesfluent-and-avaloniathemessimple-themes
+		https://stackoverflow.com/questions/77666670/how-to-use-standard-theme-colors-in-my-avalonia-custom-control/77680423#77680423
+		https://github.com/AvaloniaUI/Avalonia/blob/0bf3ffc05b4ba6ad59de501099f9d9ba39cbd944/src/Avalonia.Themes.Fluent/Accents/BaseColorsPalette.xaml#L33
+		-->
+		<FluentTheme>
+			<FluentTheme.Palettes>
+				<ColorPaletteResources x:Key="Dark" RegionColor="#222"/>
+			</FluentTheme.Palettes>
+		</FluentTheme>
+	</Application.Styles>
 </Application>

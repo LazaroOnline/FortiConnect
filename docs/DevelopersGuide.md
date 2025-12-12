@@ -2,9 +2,9 @@
 # Developer's Guide
 
 ## Developer Software
-- Visual Studio 2019 (or higher)
+- Visual Studio 2026 (or higher)
 - Windows (on Mac or Linux it may work except for the FortiClient automation part that uses WinForms)
-- DotNet 5.0 SDK ([url](https://dotnet.microsoft.com/download))
+- DotNet 10.0 SDK ([url](https://dotnet.microsoft.com/download))
 
 
 ## Dependencies

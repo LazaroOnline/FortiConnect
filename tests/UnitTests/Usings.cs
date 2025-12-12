@@ -1,0 +1,12 @@
+﻿global using System;
+global using System.ComponentModel;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using FortiConnect.Models;
+global using FortiConnect.Services;
+global using FortiConnect.Utils;
+global using FortiConnect.ViewModels;
+global using FortiConnect.Views;
+global using Xunit;
+global using FluentAssertions;

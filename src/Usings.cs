@@ -1,0 +1,16 @@
+﻿global using System;
+global using System.ComponentModel;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Reactive;
+global using System.Threading.Tasks;
+global using Avalonia;
+global using Avalonia.Controls;
+global using Avalonia.Controls.Templates;
+global using FortiConnect.Models;
+global using FortiConnect.Services;
+global using FortiConnect.Utils;
+global using FortiConnect.ViewModels;
+global using FortiConnect.Views;
+global using ReactiveUI;
+global using Splat;

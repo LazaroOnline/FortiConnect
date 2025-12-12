@@ -1,35 +1,29 @@
-﻿using System;
-using System.ComponentModel;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using FortiConnect.ViewModels;
+﻿using Avalonia.Markup.Xaml;
 
-namespace FortiConnect.Views
+namespace FortiConnect.Views;
+
+public partial class MainWindow : Window
 {
-	public class MainWindow : Window
+
+	public MainWindow()
 	{
-
-		public MainWindow()
-		{
-			InitializeComponent();
+		InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+		this.AttachDevTools();
 #endif
-		}
-
-		private void InitializeComponent()
-		{
-			AvaloniaXamlLoader.Load(this);
-		}
-
-		protected override void OnClosing(CancelEventArgs e)
-		{
-			base.OnClosing(e);
-			var fortiConnectForm = this.FindControl<FortiConnectForm>("FortiConnectForm");
-			var viewModel = (FortiConnectFormViewModel)fortiConnectForm.DataContext;
-			viewModel.SaveConfig();
-		}
-
 	}
+
+	private void InitializeComponent()
+	{
+		AvaloniaXamlLoader.Load(this);
+	}
+
+	protected override void OnClosing(WindowClosingEventArgs e)
+	{
+		base.OnClosing(e);
+		var fortiConnectForm = this.FindControl<FortiConnectForm>("FortiConnectForm");
+		var viewModel = (FortiConnectFormViewModel)fortiConnectForm.DataContext;
+		viewModel.SaveConfig();
+	}
+
 }
