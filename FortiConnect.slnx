@@ -3,6 +3,9 @@
     <File Path="docs/DevelopersGuide.md" />
     <File Path="docs/UserGuide.md" />
   </Folder>
+  <Folder Name="/scripts/">
+    <File Path="scripts/Build.ps1" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
     <File Path="GitVersion.yml" />
