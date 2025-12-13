@@ -2,7 +2,7 @@
 # User's Guide
 
 ## Requirements
-- DotNet 5.0 Runtime ([url](https://dotnet.microsoft.com/download))
+- DotNet 10.0 Runtime ([url](https://dotnet.microsoft.com/download))
 - Windows (on Mac or Linux some functionality like  may still work).
 
 
