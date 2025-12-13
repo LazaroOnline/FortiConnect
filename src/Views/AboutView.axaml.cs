@@ -15,7 +15,7 @@ public partial class AboutView : UserControl
 		add => AddHandler(ExitViewEvent, value);
 		remove => RemoveHandler(ExitViewEvent, value);
 	}
-	
+
 	public AboutView() : this(null)
 	{ }
 
