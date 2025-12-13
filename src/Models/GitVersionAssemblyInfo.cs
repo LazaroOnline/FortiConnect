@@ -21,7 +21,7 @@ public class GitVersionAssemblyInfo
 			+ $@"{nameof(ModificationDate)}: {GetModificationDate}{Environment.NewLine}"
 			+ $@"{nameof(Version)}: {Version}{Environment.NewLine}"
 			+ $@"{nameof(FileVersion)}: {FileVersion}{Environment.NewLine}"
-			+ $@"{nameof(InformationalVersion)}: {InformationalVersion}"
+			+ $@"{nameof(InformationalVersion)}: {Environment.NewLine}{InformationalVersion.Replace("--pending", $"{Environment.NewLine}pending")}" // This last line can grow a lot, split the label with a new line.
 			;
 	}
 }

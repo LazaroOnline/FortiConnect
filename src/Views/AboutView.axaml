@@ -2,7 +2,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="390"
+			 mc:Ignorable="d" d:DesignWidth="470" d:DesignHeight="410"
 			 x:Class="FortiConnect.Views.AboutView">
 
 	<UserControl.Styles>
@@ -11,24 +11,37 @@
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="IsReadOnly" Value="True"/>
 		</Style>
+		<Style Selector="TextBox:focus">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="FocusAdorner" Value="{x:Null}"/>
+		</Style>
+		<Style Selector="Button.LinkButton">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Foreground" Value="DeepSkyBlue"/>
+		</Style>
+
 	</UserControl.Styles>
 
-	<Border Background="#000000">
-		<StackPanel Margin="5">
-			<TextBlock TextAlignment="Center" Text="About" Margin="0,0,0,8" FontSize="18"/>
-			<Image Source="/Assets/FortiConnect.ico" Width="120" Margin="0,0,0,10"/>
-			<TextBox TextAlignment="Center">
+	<Border Background="{DynamicResource SystemRegionColor}">
+		<Grid Margin="5" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Stretch">
+			<Grid Grid.Row="0" ColumnDefinitions="*,200,*">
+				<StackPanel Grid.Column="1" Orientation="Vertical">
+					<TextBlock  TextAlignment="Center" Text="About" Margin="0,0,0,8" FontSize="18"/>
+					<Image Source="/Assets/FortiConnect.ico" Width="120" Margin="0,0,0,10"/>
+				</StackPanel>
+			</Grid>
+			<TextBlock Grid.Row="2" TextAlignment="Center">
 				Developed by A. Lazaro, 2020.
-			</TextBox>
-			<TextBox TextAlignment="Center" Text="{Binding GitVersion}"/>
-			<Button Background="Transparent" BorderThickness="0" Cursor="Hand" Foreground="Aqua" Command="{Binding OpenLinkLicense}">
-				MIT License
-			</Button>
-			<Button Background="Transparent" BorderThickness="0" Cursor="Hand" Foreground="Aqua" Command="{Binding OpenLinkGitHub}">
-				GitHub
-			</Button>
-			<Button Command="{Binding OnCloseView}" Margin="0,5,0,0" FontSize="18">OK</Button>
-		</StackPanel>
+			</TextBlock>
+			<TextBox Grid.Row="3" TextAlignment="Center" Text="{Binding GitVersion}" HorizontalContentAlignment="Center"/>
+			<Grid Grid.Row="4" ColumnDefinitions="*,8,*,8,*" HorizontalAlignment="Center">
+				<Button Grid.Column="0" Classes="LinkButton" Command="{Binding OpenLinkLicense}">MIT License</Button>
+				<Button Grid.Column="2" Classes="LinkButton" Command="{Binding OpenLinkGitHub}">GitHub</Button>
+				<Button Grid.Column="4" Command="{Binding OnCloseView}" FontSize="16" Width="130">OK</Button>
+			</Grid>
+		</Grid>
 	</Border>
 
 </UserControl>

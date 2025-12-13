@@ -14,5 +14,5 @@ and email code in the FortiClient VPN application.
 - [Developer's Guide](/docs/DevelopersGuide.md)
 
 
-![FortiConnect-UI](DOCS/IMAGES/FortiConnect-UI.png)  
+![FortiConnect-UI](docs/images/FortiConnect-UI.png)  
 

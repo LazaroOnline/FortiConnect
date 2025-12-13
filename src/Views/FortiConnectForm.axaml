@@ -5,101 +5,121 @@
 			xmlns:vm="clr-namespace:FortiConnect.ViewModels;assembly=FortiConnect"
 			xmlns:views="clr-namespace:FortiConnect.Views;assembly=FortiConnect"
 			x:Class="FortiConnect.Views.FortiConnectForm"
-			mc:Ignorable="d" d:DesignWidth="380" d:DesignHeight="390"
-			MinWidth="380" MinHeight="390"
-			Width="380" Height="390">
+			mc:Ignorable="d" d:DesignWidth="470" d:DesignHeight="440"
+			MinWidth="380" MinHeight="390">
 
 	<Design.DataContext>
 		<vm:FortiConnectFormViewModel/>
 	</Design.DataContext>
 
 	<UserControl.Styles>
-		<Style Selector="TextBox">
-			<Setter Property="MinWidth" Value="200"/>
+		<Style Selector="TextBlock.Col1">
+			<Setter Property="Width" Value="115"/>
+		</Style>
+		
+		<Style Selector="Button.TextBoxButton">
+			<Setter Property="HorizontalAlignment" Value="Right"/>
+			<Setter Property="FontSize" Value="11"/>
+			<Setter Property="BorderBrush" Value="Transparent"/>
+			<Setter Property="Background" Value="Gray"/>
+			<Setter Property="Margin" Value="0,0,1,0"/>
+			<Setter Property="Padding" Value="0"/>
+			<Setter Property="CornerRadius" Value="1"/>
+			<Setter Property="Height" Value="37"/>
+			<Setter Property="Width" Value="38"/>
+			<Style Selector="^ /template/ ContentPresenter">
+				<Setter Property="Background" Value="{DynamicResource SystemBaseLowColor}"/>
+				<Style Selector="^:pointerover">
+					<Setter Property="Background" Value="{DynamicResource SystemBaseMediumLowColor}"/>
+				</Style>
+			</Style>
 		</Style>
 	</UserControl.Styles>
 
-	<!--<Style Selector="Button.LinkButton">
-		<Setter Property="Background" Value="Transparent"/>
-		<Setter Property="BorderThickness" Value="0"/>
-		<Setter Property="Padding" Value="0"/>
-	</Style>-->
-
 	<!-- https://avaloniaui.net/docs/layout -->
 	<!-- https://avaloniaui.net/docs/controls/grid -->
-	<Grid>
-		<StackPanel Spacing="6" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<Grid Margin="10"
+		ColumnDefinitions="*"
+		RowDefinitions="*">
+		<Grid Grid.Row="0"
+			ColumnDefinitions="*"
+			RowDefinitions="Auto,8,Auto,8,Auto,8,Auto,8,Auto,8,Auto,8,Auto,8,Auto,8,*">
 
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="VPN Password" VerticalAlignment="Center"/>
-				<TextBox MinWidth="170" x:Name="VpnPassword" Text="{Binding VpnPassword}" PasswordChar="•" />
-				<Button x:Name="ToggleShowVpnPassword" BorderBrush="Gray">
-					<Image Source="/Assets/images/show.png" Width="20" ></Image>
+			<Grid Grid.Row="0" ColumnDefinitions="Auto,8,*">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="VPN Password" VerticalAlignment="Center"/>
+				<TextBox   Grid.Column="2" Text="{Binding VpnPassword}" PasswordChar="•" Classes="revealPasswordButton"/>
+			</Grid>
+
+			<Grid Grid.Row="2" ColumnDefinitions="Auto,8,*">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Email Protocol" VerticalAlignment="Center"/>
+				<ComboBox  Grid.Column="2" ItemsSource="{Binding EmailProtocolOptions}" SelectedItem="{Binding EmailProtocol}" HorizontalAlignment="Stretch"/>
+			</Grid>
+
+			<Grid Grid.Row="4" ColumnDefinitions="Auto,8,*">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Email Server" VerticalAlignment="Center"/>
+				<TextBox   Grid.Column="2" Text="{Binding EmailServer}"/>
+			</Grid>
+
+			<Grid Grid.Row="6" ColumnDefinitions="Auto,8,*" MinHeight="35">
+				<TextBlock     Grid.Column="0" IsVisible="{Binding IsPortEnabled}" Classes="Col1" Text="Email Port" VerticalAlignment="Center"/>
+				<NumericUpDown Grid.Column="2" IsVisible="{Binding IsPortEnabled}" MinWidth="200" Value="{Binding EmailPort}" Increment="1" Minimum="0" Maximum="65535"/>
+			</Grid>
+
+			<Grid Grid.Row="8" ColumnDefinitions="Auto,8,*">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Email User-Name" VerticalAlignment="Center"/>
+				<TextBox   Grid.Column="2" Text="{Binding EmailUserName}"/>
+			</Grid>
+
+			<Grid Grid.Row="10" ColumnDefinitions="Auto,8,*">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Email Password" VerticalAlignment="Center"/>
+				<TextBox   Grid.Column="2" Text="{Binding EmailPassword}" PasswordChar="•" Classes="revealPasswordButton"/>
+			</Grid>
+
+			<Grid Grid.Row="12" ColumnDefinitions="Auto,8,*" ToolTip.Tip="Mark VPN emails as read after processing.">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Mark as read" VerticalAlignment="Center"/>
+				<CheckBox  Grid.Column="2" IsChecked="{Binding MarkVpnEmailAsRead}" Padding="0"/>
+			</Grid>
+
+			<Grid Grid.Row="14" ColumnDefinitions="Auto,8,*,8,Auto">
+				<TextBlock Grid.Column="0" Classes="Col1" Text="Vpn Email Code" VerticalAlignment="Center"/>
+				<TextBox   Grid.Column="2" MinWidth="170" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
+				<Button    Grid.Column="2" Classes="TextBoxButton" HorizontalAlignment="Right" FontSize="11" Padding="0"
+							Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" ToolTip.Tip="Copy code.">
+					<TextBlock FontSize="22" FontFamily="Segoe UI Symbol" Margin="0" Padding="0">📄</TextBlock>
+					<!-- Another emoji option:
+					<TextBlock FontSize="22" Margin="0" Padding="3,-1,0,0">📋</TextBlock>
+					-->
 				</Button>
-				<Button Command="{Binding OnOpenAboutWindow}" Margin="5,0,0,0" Background="Gray" BorderThickness="0" Cursor="Hand" >
-					<Image Source="/Assets/images/about.png" Width="22" ></Image>
-				</Button>
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Email Protocol" VerticalAlignment="Center" />
-				<ComboBox MinWidth="200" ItemsSource="{Binding EmailProtocolOptions}" SelectedItem="{Binding EmailProtocol}"/>
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Email Server" VerticalAlignment="Center" />
-				<TextBox Text="{Binding EmailServer}" />
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" MinHeight="35">
-				<TextBlock     IsVisible="{Binding IsPortEnabled}" Width="100" Text="Email Port" VerticalAlignment="Center" />
-				<NumericUpDown IsVisible="{Binding IsPortEnabled}" MinWidth="200" Text="{Binding EmailPort}" Increment="1" Minimum="0" Maximum="65535"/>
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Email User-Name" VerticalAlignment="Center" />
-				<TextBox Text="{Binding EmailUserName}" />
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Email Password" VerticalAlignment="Center" />
-				<TextBox MinWidth="170" x:Name="EmailPassword" Text="{Binding EmailPassword}" PasswordChar="•" />
-				<Button x:Name="ToggleShowEmailPassword" BorderBrush="Gray">
-					<Image Source="/Assets/images/show.png" Width="20" ></Image>
-				</Button>
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" ToolTip.Tip="Mark VPN emails as read after processing." >
-				<TextBlock Width="100" Text="Mark as read" VerticalAlignment="Center" />
-				<CheckBox IsChecked="{Binding MarkVpnEmailAsRead}"/>
-			</StackPanel>
-
-			<StackPanel Orientation="Horizontal" >
-				<TextBlock Width="100" Text="Vpn Email Code" VerticalAlignment="Center" />
-				<TextBox   MinWidth="170" Text="{Binding EmailVpnCode}" IsReadOnly="True"/>
-				<Button    Width="28" Height="29" FontSize="11" BorderBrush="Gray" Background="Gray" Command="{Binding OnCopyEmailVpnCodeCommand}" IsEnabled="{Binding IsEnabledCopyEmail}" ToolTip.Tip="Copy code.">
-					<Image Source="/Assets/images/copy.png" Width="26"></Image>
-				</Button>
-				<Button Command="{Binding OnGetEmailVpnCodeCommand}" FontSize="14" Margin="5,0,0,0"
+				<Button Grid.Column="4" Command="{Binding OnGetEmailVpnCodeCommand}" FontSize="16" Height="38" FontWeight="DemiBold"
 					ToolTip.Tip="Get the VPN confirmation code from your emails. This step is already included in the main 'Connect to VPN' functionality.">
 					Get
 				</Button>
-			</StackPanel>
+			</Grid>
 
-			<StackPanel Orientation="Vertical" >
-				<Button x:Name="ConnectToVpnButton" Command="{Binding OnConnectToVpnCommand}" FontSize="20" Margin="0,5,0,0">Connect to VPN</Button>
-				<StackPanel MinHeight="20">
+			<Grid Grid.Row="16" RowDefinitions="Auto,Auto">
+				<Grid ColumnDefinitions="*,8,Auto">
+					<Button x:Name="ConnectToVpnButton" Command="{Binding OnConnectToVpnCommand}" FontSize="20" FontWeight="DemiBold" HorizontalAlignment="Stretch" Padding="0">
+						Connect to VPN
+					</Button>
+					<Button Grid.Column="2" Command="{Binding OnOpenAboutWindow}" 
+						BorderThickness="0" HorizontalAlignment="Stretch" Width="44" Padding="0"
+						ToolTip.Tip="Open 'About' info dialog">
+						<TextBlock FontSize="22" Margin="0">ℹ️</TextBlock>
+					</Button>
+				</Grid>
+
+				<StackPanel Grid.Row="1" MinHeight="20" HorizontalAlignment="Center">
 					<TextBlock Foreground="Orange" x:Name="CapsLockWarning">
 						Warning: Caps lock is on, turn it off before connecting.
 					</TextBlock>
 				</StackPanel>
-			</StackPanel>
+			</Grid>
 
-		</StackPanel>
+		</Grid>
 
-		<views:AboutView IsVisible="{Binding $parent.DataContext.IsAboutVisible}" ExitView="AboutViewExitHandler"/>
+		<views:AboutView Grid.Row="0" IsVisible="{Binding $parent.DataContext.IsAboutVisible}" ExitView="AboutViewExitHandler"/>
 
-		<Border IsVisible="{Binding IsPopupVisible}" Background="#000000">
+		<Border Grid.Row="0" IsVisible="{Binding IsPopupVisible}" Background="#000000">
 			<Grid RowDefinitions="20,*,40" Margin="10">
 				<TextBlock Grid.Row="0" Text="{Binding OutputMessageTitle}"/>
 				<TextBox Grid.Row="1" Text="{Binding OutputMessage}" IsReadOnly="True" AcceptsReturn="True"/>

@@ -17,5 +17,15 @@
 				<ColorPaletteResources x:Key="Dark" RegionColor="#222"/>
 			</FluentTheme.Palettes>
 		</FluentTheme>
+		
+		<Style Selector="Button">
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Height" Value="38"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+
 	</Application.Styles>
 </Application>
