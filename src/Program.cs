@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 
 namespace FortiConnect;
 
@@ -56,6 +56,7 @@ public class Program
 	public static AppBuilder BuildAvaloniaApp()
 		=> AppBuilder.Configure<App>()
 			.UsePlatformDetect()
+			.WithInterFont()
 			.LogToTrace()
 			.UseReactiveUI();
 

@@ -35,11 +35,11 @@
 			<TextBlock Grid.Row="2" TextAlignment="Center">
 				Developed by A. Lazaro, 2020.
 			</TextBlock>
-			<TextBox Grid.Row="3" TextAlignment="Center" Text="{Binding GitVersion}" HorizontalContentAlignment="Center"/>
+			<TextBox Grid.Row="3" TextAlignment="Center" Text="{Binding GitVersion}" HorizontalContentAlignment="Center" FontSize="13"/>
 			<Grid Grid.Row="4" ColumnDefinitions="*,8,*,8,*" HorizontalAlignment="Center">
 				<Button Grid.Column="0" Classes="LinkButton" Command="{Binding OpenLinkLicense}">MIT License</Button>
 				<Button Grid.Column="2" Classes="LinkButton" Command="{Binding OpenLinkGitHub}">GitHub</Button>
-				<Button Grid.Column="4" Command="{Binding OnCloseView}" FontSize="16" Width="130">OK</Button>
+				<Button Grid.Column="4" Command="{Binding OnCloseView}" FontSize="16" Width="120">OK</Button>
 			</Grid>
 		</Grid>
 	</Border>
