@@ -2,6 +2,25 @@ namespace FortiConnect.UnitTests;
 
 public class ProcessWritterServiceTest
 {
+
+	[Theory
+		(Skip = "Skip, only execute manually")
+	]
+	//[InlineData("a", "Notepad")] // Simple key test
+	[InlineData($"Start{KeyCode.TAB}AfterTab{KeyCode.ARROW_DOWN} -Down{KeyCode.ENTER}END.", "Notepad")] // All required special keys
+	//[InlineData("{invalid}", "Notepad")] // Invalid command > Throws exception
+	public void IntegrationTest(string text, string processName)
+	{
+		// Process names are case-insensitive
+		// var process = Process.GetProcessesByName(processName).FirstOrDefault();
+		var process = FortiConnector.GetExistingProcess(processName);
+		var sut = new ProcessWritterService();
+
+		// Act:
+		sut.WriteToProcess(process, text);
+		Assert.True(true); // Observe manually
+	}
+
 	[Theory]
 	[InlineData("", 0)]
 	[InlineData(null, 0)]

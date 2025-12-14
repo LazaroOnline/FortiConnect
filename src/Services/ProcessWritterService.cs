@@ -40,88 +40,11 @@ public class ProcessWritterService : IProcessWritterService
 				// followed by a character that would require an special key combination like "$" that requires Shift,
 				// Sending "{%}$" in one single call would produce "%4" instead of "%$".
 				// To solve this issue we separate the text in commands and execute individually.
-
 				System.Windows.Forms.SendKeys.SendWait(command);
 
 				// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys.flush
 				// SendKeys.Flush();
 			}
-		}
-	}
-
-	// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys?view=net-5.0
-	public static class WriteKey
-	{
-		public const string ENTER = "{ENTER}";
-		public const string TAB = "{TAB}";
-
-		public const string CAPS_LOCK = "{CAPSLOCK}";
-		public const string BACKSPACE = "{BACKSPACE}";
-		public const string DELETE = "{DELETE}";
-		public const string HELP = "{HELP}";
-		public const string INSERT = "{INSERT}";
-		public const string NUMLOCK = "{NUMLOCK}";
-		public const string PRTSC = "{PRTSC}";
-		public const string SCROLLLOCK = "{SCROLLLOCK}";
-		public const string BREAK = "{BREAK}";
-
-		public const string PAGE_UP = "{PGUP}";
-		public const string PAGE_DOWN = "{PGDN}";
-		public const string HOME = "{HOME}";
-		public const string END = "{END}";
-		public const string ESCAPE = "{ESC}";
-
-		public const string ADD = "{ADD}";
-		public const string SUBTRACT = "{SUBTRACT}";
-		public const string MULTIPLY = "{MULTIPLY}";
-		public const string DIVIDE = "{DIVIDE}";
-
-		public const string F1  = "{F1}";
-		public const string F2  = "{F2}";
-		public const string F3  = "{F3}";
-		public const string F4  = "{F4}";
-		public const string F5  = "{F5}";
-		public const string F6  = "{F6}";
-		public const string F7  = "{F7}";
-		public const string F8  = "{F8}";
-		public const string F9  = "{F9}";
-		public const string F10 = "{F10}";
-		public const string F11 = "{F11}";
-		public const string F12 = "{F12}";
-		public const string F13 = "{F13}";
-		public const string F14 = "{F14}";
-		public const string F15 = "{F15}";
-		public const string F16 = "{F16}";
-
-		public const string ARROW_UP = "{UP}";
-		public const string ARROW_DOWN = "{DOWN}";
-		public const string ARROW_LEFT = "{LEFT}";
-		public const string ARROW_RIGHT = "{RIGHT}";
-		
-		public const string SHIFT = "+";
-		public const string ALT = "%";
-		public const string CONTROL = "^";
-	}
-	
-	public string GetKeyTab()
-	{
-		return WriteKey.TAB;
-		//return GetSpecialKey(Avalonia.Input.Key.Tab);
-	}
-
-	public string GetKeyEnter()
-	{
-		return WriteKey.ENTER;
-		//return GetSpecialKey(Avalonia.Input.Key.Enter);
-	}
-
-	public string GetSpecialKey(Avalonia.Input.Key key)
-	{
-		switch (key)
-		{
-			case Avalonia.Input.Key.Enter: return WriteKey.ENTER;
-			case Avalonia.Input.Key.Tab: return WriteKey.TAB;
-			default: throw new NotImplementedException("If more special keys are required, keep adding them to the supported list in source code.");
 		}
 	}
 
@@ -239,4 +162,80 @@ public class ProcessWritterService : IProcessWritterService
 
 	#endregion
 
+}
+
+// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys?view=net-5.0
+public static class KeyCode
+{
+	public const string ENTER = "{ENTER}";
+	public const string TAB = "{TAB}";
+
+	public const string CAPS_LOCK = "{CAPSLOCK}";
+	public const string BACKSPACE = "{BACKSPACE}";
+	public const string DELETE = "{DELETE}";
+	public const string HELP = "{HELP}";
+	public const string INSERT = "{INSERT}";
+	public const string NUMLOCK = "{NUMLOCK}";
+	public const string PRTSC = "{PRTSC}";
+	public const string SCROLLLOCK = "{SCROLLLOCK}";
+	public const string BREAK = "{BREAK}";
+
+	public const string PAGE_UP = "{PGUP}";
+	public const string PAGE_DOWN = "{PGDN}";
+	public const string HOME = "{HOME}";
+	public const string END = "{END}";
+	public const string ESCAPE = "{ESC}";
+
+	public const string ADD = "{ADD}";
+	public const string SUBTRACT = "{SUBTRACT}";
+	public const string MULTIPLY = "{MULTIPLY}";
+	public const string DIVIDE = "{DIVIDE}";
+
+	public const string F1 = "{F1}";
+	public const string F2 = "{F2}";
+	public const string F3 = "{F3}";
+	public const string F4 = "{F4}";
+	public const string F5 = "{F5}";
+	public const string F6 = "{F6}";
+	public const string F7 = "{F7}";
+	public const string F8 = "{F8}";
+	public const string F9 = "{F9}";
+	public const string F10 = "{F10}";
+	public const string F11 = "{F11}";
+	public const string F12 = "{F12}";
+	public const string F13 = "{F13}";
+	public const string F14 = "{F14}";
+	public const string F15 = "{F15}";
+	public const string F16 = "{F16}";
+
+	public const string ARROW_UP = "{UP}";
+	public const string ARROW_DOWN = "{DOWN}";
+	public const string ARROW_LEFT = "{LEFT}";
+	public const string ARROW_RIGHT = "{RIGHT}";
+
+	public const string SHIFT = "+";
+	public const string ALT = "%";
+	public const string CONTROL = "^";
+
+	public static string GetKeyTab()
+	{
+		return KeyCode.TAB;
+		//return GetKeyCode(Avalonia.Input.Key.Tab);
+	}
+
+	public static string GetKeyEnter()
+	{
+		return KeyCode.ENTER;
+		//return GetKeyCode(Avalonia.Input.Key.Enter);
+	}
+
+	public static string GetKeyCode(Avalonia.Input.Key key)
+	{
+		switch (key)
+		{
+			case Avalonia.Input.Key.Enter: return KeyCode.ENTER;
+			case Avalonia.Input.Key.Tab: return KeyCode.TAB;
+			default: throw new NotImplementedException("If more special keys are required, keep adding them to the supported list in source code.");
+		}
+	}
 }

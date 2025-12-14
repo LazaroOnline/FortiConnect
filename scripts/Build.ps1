@@ -31,6 +31,7 @@ dotnet publish $csprojPath `
 -p:PublishAot=false `
 -p:PublishTrimmed=false `
 -p:PublishSingleFile=true 
+# Can't enable 'PublishTrimmed' if WindowsForms is referenced.
 # -r "win-x64" 
 $compiledAppFile = Get-Item "$publishFolderApp/$appFileName.exe" -ErrorAction SilentlyContinue
 if ($compiledAppFile -eq $null) {

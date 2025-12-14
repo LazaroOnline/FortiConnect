@@ -58,7 +58,7 @@ public class FortiConnector
 
 	public string GetLoginKeystrokes(string vpnUserPass)
 	{
-		var enter = _processWritterService.GetKeyEnter();
+		var enter = KeyCode.GetKeyEnter();
 		var vpnUserPassLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnUserPass);
 		var passwordFocusSequence = GetLoginPasswordFocusSequence();
 		return passwordFocusSequence + vpnUserPassLiteral + enter;
@@ -66,7 +66,7 @@ public class FortiConnector
 
 	public string GetLoginPasswordFocusSequence()
 	{
-		var tab = _processWritterService.GetKeyTab();
+		var tab = KeyCode.GetKeyTab();
 
 		if (LoginPasswordFocusSequence != null)
 			return LoginPasswordFocusSequence;
@@ -84,7 +84,7 @@ public class FortiConnector
 	
 	public string GetLoginConfirmationKeystrokes(string vpnEmailCode)
 	{
-		var enter = _processWritterService.GetKeyEnter();
+		var enter = KeyCode.GetKeyEnter();
 		var vpnEmailCodeLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnEmailCode);
 		var loginVerificationFocusSequence = GetLoginVerificationFocusSequence();
 		return loginVerificationFocusSequence + vpnEmailCodeLiteral + enter;
@@ -111,9 +111,15 @@ public class FortiConnector
 
 	public Process GetExistingFortiClientProcess()
 	{
-		var processes = Process.GetProcessesByName(FortiClientProcessName);
-		if (!processes.Any()) {
-			var processNameWithoutExtension = Path.GetFileNameWithoutExtension(FortiClientProcessName);
+		return GetExistingProcess(FortiClientProcessName);
+	}
+
+	public static Process GetExistingProcess(string processName)
+	{
+		var processes = Process.GetProcessesByName(processName);
+		if (!processes.Any())
+		{
+			var processNameWithoutExtension = Path.GetFileNameWithoutExtension(processName);
 			processes = Process.GetProcessesByName(processNameWithoutExtension);
 		}
 		return processes.FirstOrDefault();
