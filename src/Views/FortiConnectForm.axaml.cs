@@ -28,11 +28,7 @@ public partial class FortiConnectForm : UserControl
 
 	private void SetCapsLockWarning()
 	{
-		// TODO: get isCapsLock from Avalonia framework once it is supported: 
-		// https://github.com/AvaloniaUI/Avalonia/issues/2422
-		//var isCapsLock = Avalonia.Input.Key.CapsLock   Avalonia.Input.KeyStates.Toggled
-
-		var isCapsLock = System.Windows.Forms.Control.IsKeyLocked(System.Windows.Forms.Keys.CapsLock);
+		var isCapsLock = KeyboardState.IsCapsLockOn();
 		var capsLockWarning = this.FindControl<Control>("CapsLockWarning");
 		// System.Diagnostics.Debug.WriteLine("IsCapsLock: " + isCapsLock);
 		capsLockWarning.IsVisible = isCapsLock;
