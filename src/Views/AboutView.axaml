@@ -2,7 +2,9 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="clr-namespace:FortiConnect.ViewModels;assembly=FortiConnect"
 			 mc:Ignorable="d" d:DesignWidth="470" d:DesignHeight="410"
+			 x:DataType="vm:AboutViewModel"
 			 x:Class="FortiConnect.Views.AboutView">
 
 	<UserControl.Styles>

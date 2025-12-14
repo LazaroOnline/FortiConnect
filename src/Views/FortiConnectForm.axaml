@@ -4,6 +4,7 @@
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			xmlns:vm="clr-namespace:FortiConnect.ViewModels;assembly=FortiConnect"
 			xmlns:views="clr-namespace:FortiConnect.Views;assembly=FortiConnect"
+			x:DataType="vm:FortiConnectFormViewModel"
 			x:Class="FortiConnect.Views.FortiConnectForm"
 			mc:Ignorable="d" d:DesignWidth="470" d:DesignHeight="440"
 			MinWidth="380" MinHeight="390">
