@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using ReactiveUI.Avalonia;
 
 namespace FortiConnect;
@@ -22,9 +21,18 @@ public class Program
 	[STAThread]
 	public static void Main(string[] args)
 	{
-		Console.WriteLine("Starting FortiConnect...");
+		Console.WriteLine($"Starting {nameof(FortiConnect)} app...");
+		AppDomain.CurrentDomain.UnhandledException += (s, e) => {
+			var ex = e.ExceptionObject as Exception;
+			FileLogger.Log($"Crashed App error:{Environment.NewLine}{ex}");
+		};
+		TaskScheduler.UnobservedTaskException += (s, e) => {
+			FileLogger.Log($"Crashed Task error:{Environment.NewLine}{e.Exception}");
+			e.SetObserved();
+		};
+
 		var configBuilder = new ConfigurationBuilder()
-			.SetBasePath(Directory.GetCurrentDirectory())
+			.SetBasePath(AppContext.BaseDirectory)
 			.AddJsonFile(APPSETTINGS_FILENAME, optional: true)
 			.AddJsonFile(APPSETTINGS_LOCAL_FILENAME, optional: true)
 			.AddJsonFile(APPSETTINGS_AUTOSAVE_FILENAME, optional: true)
