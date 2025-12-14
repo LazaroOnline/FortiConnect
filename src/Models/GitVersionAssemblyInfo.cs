@@ -9,8 +9,8 @@ public class GitVersionAssemblyInfo
 	public string FileVersion			{ get; set; }
 	public string InformationalVersion	{ get; set; }
 
-	public string DateFormat	{ get; set; } = "yyyy-MM-dd HH\\:mm zzz";
-		
+	public string DateFormat			{ get; set; } = "yyyy-MM-dd HH\\:mm zzz";
+
 	public string GetCreationDate		{ get => CreationDate.ToString(DateFormat); }
 	public string GetModificationDate	{ get => ModificationDate.ToString(DateFormat); }
 
@@ -18,7 +18,7 @@ public class GitVersionAssemblyInfo
 	{
 		return $@"{nameof(AssemblyFileName)}: {AssemblyFileName}{Environment.NewLine}"
 			+ $@"{nameof(CreationDate)}: {GetCreationDate}{Environment.NewLine}"
-			+ $@"{nameof(ModificationDate)}: {GetModificationDate}{Environment.NewLine}"
+			+ $@"{nameof(ModificationDate)}: {GetModificationDate}{Environment.NewLine}" // This is the real datetime of the build, not creation date.
 			+ $@"{nameof(Version)}: {Version}{Environment.NewLine}"
 			+ $@"{nameof(FileVersion)}: {FileVersion}{Environment.NewLine}"
 			+ $@"{nameof(InformationalVersion)}: {Environment.NewLine}{ToMultilineInformationalVersion(InformationalVersion)}" // This last line can grow a lot, split the label with a new line.
