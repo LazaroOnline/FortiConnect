@@ -2,11 +2,15 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace FortiConnect.Services;
 
 // https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
+// https://stackoverflow.com/questions/825651/how-can-i-send-the-f4-key-to-a-process-in-c
+// <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+// <UseWPF>true</UseWPF>
+// <UseWindowsForms>true</UseWindowsForms>
+
 public class ProcessWritterService : IProcessWritterService
 {
 	public int DelayToShowWindow { get; set; } = 2000;
@@ -37,7 +41,7 @@ public class ProcessWritterService : IProcessWritterService
 				// Sending "{%}$" in one single call would produce "%4" instead of "%$".
 				// To solve this issue we separate the text in commands and execute individually.
 
-				SendKeys.SendWait(command);
+				System.Windows.Forms.SendKeys.SendWait(command);
 
 				// https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys.flush
 				// SendKeys.Flush();
@@ -102,20 +106,21 @@ public class ProcessWritterService : IProcessWritterService
 	public string GetKeyTab()
 	{
 		return WriteKey.TAB;
-		//return GetSpecialKey(System.Windows.Forms.Keys.Tab);
+		//return GetSpecialKey(Avalonia.Input.Key.Tab);
 	}
-	
+
 	public string GetKeyEnter()
 	{
 		return WriteKey.ENTER;
-		//return GetSpecialKey(System.Windows.Forms.Keys.Enter);
+		//return GetSpecialKey(Avalonia.Input.Key.Enter);
 	}
 
-	public string GetSpecialKey(System.Windows.Forms.Keys key)
+	public string GetSpecialKey(Avalonia.Input.Key key)
 	{
-		switch(key) {
-			case Keys.Enter : return WriteKey.ENTER;
-			case Keys.Tab : return WriteKey.TAB;
+		switch (key)
+		{
+			case Avalonia.Input.Key.Enter: return WriteKey.ENTER;
+			case Avalonia.Input.Key.Tab: return WriteKey.TAB;
 			default: throw new NotImplementedException("If more special keys are required, keep adding them to the supported list in source code.");
 		}
 	}
@@ -207,7 +212,7 @@ public class ProcessWritterService : IProcessWritterService
 	
 	public string ReverseCaseIfKeyboardHasCapsLock(string text)
 	{
-		var isCapsLock = System.Windows.Forms.Control.IsKeyLocked(Keys.CapsLock);
+		var isCapsLock = KeyboardState.IsCapsLockOn();
 		if (isCapsLock) {
 			return ReverseCase(text);
 		}
@@ -229,12 +234,6 @@ public class ProcessWritterService : IProcessWritterService
 	[DllImport ("User32.dll")]
 	static extern int SetForegroundWindow(IntPtr point);
 	
-	// https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
-	// <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-	// <UseWPF>true</UseWPF>
-	// <UseWindowsForms>true</UseWindowsForms>
-
-	// https://stackoverflow.com/questions/825651/how-can-i-send-the-f4-key-to-a-process-in-c
 	[DllImport("user32.dll")]
 	static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 

@@ -13,8 +13,7 @@ public class AppSettingsWriter
 
 	public void Save(AppSettings appSettings, string fileName = DEFAULT_FILENAME)
 	{
-		var executingAssembly = Assembly.GetExecutingAssembly();
-		var folderPath = Path.GetDirectoryName(executingAssembly.Location);
+		var folderPath = CurrentApp.GetFolder();
 		var settingsFullPath = $"{folderPath}/{fileName}";
 
 		var jsonSerializerOptions = new JsonSerializerOptions {

@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace FortiConnect.Services;
 
@@ -37,9 +36,10 @@ public class SendKeysToApp
 		if (m_hWndEdit != null) // edit window found?
 		{
 			// Now you could use different messages to send text (WM_CHAR, WM_KEYDOWN, ...)
-			// I decided to use the clipboard:
-			System.Windows.Forms.Clipboard.SetText("this is magic!"); // Copy some text to the clipboard
-			SendMessage(m_hWndEdit, WM_PASTE, 0, 0); // paste it to the target window
+			// Example to paste the clipboard to the target window:
+			// SendMessage(m_hWndEdit, WM_PASTE, 0, 0);
+
+			// Add your logic here...
 		}
 	}
 

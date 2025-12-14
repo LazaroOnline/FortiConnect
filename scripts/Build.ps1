@@ -28,9 +28,9 @@ dotnet publish $csprojPath `
 -c "Release" `
 -p:DebugType=None `
 -p:EnableCompressionInSingleFile=false `
+-p:PublishAot=false `
 -p:PublishTrimmed=false `
--p:PublishSingleFile=false `
--p:PublishAot=false
+-p:PublishSingleFile=true 
 # -r "win-x64" 
 $compiledAppFile = Get-Item "$publishFolderApp/$appFileName.exe" -ErrorAction SilentlyContinue
 if ($compiledAppFile -eq $null) {
