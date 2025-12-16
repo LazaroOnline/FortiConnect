@@ -49,10 +49,11 @@ that may require you to have admin privileges that your company may didn't give 
 ### SendKeys function only works in Windows:
 https://www.reddit.com/r/csharp/comments/9dyf0t/having_my_program_send_an_enter_key_press/  
 Possible solutions:
-- AutoHotkey.Interop: https://github.com/amazing-andrew/AutoHotkey.Interop
-- InputSimulator:
-```
-Install-Package InputSimulator: https://github.com/michaelnoonan/inputsimulator
-var sim = new InputSimulator();
-sim.Keyboard.KeyPress(VirtualKeyCode.RETURN);
-```
+- AutoHotkey.Interop: [git](https://github.com/amazing-andrew/AutoHotkey.Interop)  
+- NuGet package "InputSimulator": [git](https://github.com/michaelnoonan/inputsimulator) Basic.  
+- NuGet package "InputSimulatorPlus": [git](https://github.com/TChatzigiannakis/InputSimulatorPlus) Forked from `InputSimulator` adds scan codes.  
+- NuGet package "InputSimulatorStandard": [git](https://github.com/GregsStack/InputSimulatorStandard) Forked from `InputSimulatorPlus` converted to dotnet standard 2.0.  
+- NuGet package "H.InputSimulator": [git](https://github.com/HavenDV/H.InputSimulator) Based on `InputSimulatorStandard` converted to dotnet standard 2.0 or dotnet 8 for AOT and trimming.  
+
+In order of creation: `InputSimulator < InputSimulatorPlus < InputSimulatorStandard < H.InputSimulator`.  
+So the best option at the moment is `H.InputSimulator`.  

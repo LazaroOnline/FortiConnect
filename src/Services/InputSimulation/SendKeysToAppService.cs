@@ -5,7 +5,7 @@ namespace FortiConnect.Services;
 
 // This class is a test to try to find a better way of writing the login into FortiClient UI.
 // https://www.codeproject.com/Questions/316567/Send-Keys-to-background
-public class SendKeysToApp
+public class SendKeysToAppService
 {
 	delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 

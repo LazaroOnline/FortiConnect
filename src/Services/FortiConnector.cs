@@ -18,19 +18,19 @@ public class FortiConnector
 	public string LoginPasswordFocusSequence { get; set; }
 	/// <summary>If set, it will override the keystroke sequence used to set the login verification code into focus.</summary>
 	public string LoginVerificationFocusSequence { get; set; }
-	
-	private IEmailService _emailService { get; set; }
-	private IProcessWritterService _processWritterService { get; set; }
-	
+
+	private readonly IEmailService _emailService;
+	private readonly ISendKeysToProcessService _sendKeysToProcessService;
+
 	private bool _emailMarkAsRead { get; set; }
 
 	public FortiConnector(
 		 IEmailService emailService
-		,IProcessWritterService processWritterService
-		,bool markVpnEmailsAsRead = false)
+		,ISendKeysToProcessService sendKeysToProcessService
+		, bool markVpnEmailsAsRead = false)
 	{
 		_emailService = emailService ?? Splat.Locator.Current.GetService<IEmailService>();
-		_processWritterService = processWritterService ?? Splat.Locator.Current.GetService<IProcessWritterService>();
+		_sendKeysToProcessService = sendKeysToProcessService ?? Splat.Locator.Current.GetService<ISendKeysToProcessService>();
 		_emailMarkAsRead = markVpnEmailsAsRead;
 	}
 
@@ -45,13 +45,13 @@ public class FortiConnector
 		var process = GetOrCreateFortiClientProcess();
 
 		var loginKeystrokes = GetLoginKeystrokes(vpnUserPass);
-		_processWritterService.WriteToProcess(process, loginKeystrokes);
+		_sendKeysToProcessService.WriteToProcess(process, loginKeystrokes);
 
 		Thread.Sleep(DelayToFetchVpnCodeEmail);
 		var vpnEmailCode =_emailService.GetLastVpnEmailCode(emailConfig, markEmailAsRead);
 		Console.Beep(100, 300); // Provide some feedback to the user so they know the process stopped trying to get the email.
 		var loginConfirmationKeystrokes = GetLoginConfirmationKeystrokes(vpnEmailCode);
-		_processWritterService.WriteToProcess(process, loginConfirmationKeystrokes);
+		_sendKeysToProcessService.WriteToProcess(process, loginConfirmationKeystrokes);
 
 		return vpnEmailCode;
 	}
@@ -59,7 +59,7 @@ public class FortiConnector
 	public string GetLoginKeystrokes(string vpnUserPass)
 	{
 		var enter = KeyCode.GetKeyEnter();
-		var vpnUserPassLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnUserPass);
+		var vpnUserPassLiteral = _sendKeysToProcessService.EscapeLiteralTextToWrite(vpnUserPass);
 		var passwordFocusSequence = GetLoginPasswordFocusSequence();
 		return passwordFocusSequence + vpnUserPassLiteral + enter;
 	}
@@ -81,11 +81,11 @@ public class FortiConnector
 			// This combination works if you focus on the empty area before the VpnName, UserName and Password text-boxes.
 			return tab + tab + tab;
 	}
-	
+
 	public string GetLoginConfirmationKeystrokes(string vpnEmailCode)
 	{
 		var enter = KeyCode.GetKeyEnter();
-		var vpnEmailCodeLiteral = _processWritterService.EscapeLiteralTextToWrite(vpnEmailCode);
+		var vpnEmailCodeLiteral = _sendKeysToProcessService.EscapeLiteralTextToWrite(vpnEmailCode);
 		var loginVerificationFocusSequence = GetLoginVerificationFocusSequence();
 		return loginVerificationFocusSequence + vpnEmailCodeLiteral + enter;
 	}
@@ -148,7 +148,7 @@ public class FortiConnector
 	{
 		return System.Diagnostics.FileVersionInfo.GetVersionInfo(FortiClientExeFullPath);
 	}
-	
+
 	// See version list at: https://docs.fortinet.com/product/forticlient/
 	public string GetFortiClientVersion()
 	{
@@ -157,7 +157,7 @@ public class FortiConnector
 	}
 
 	//public bool IsFortiClient_v6_2() => GetFortiClientVersion().StartsWith("6.2");
-	
+
 	public bool IsFortiClientVersionEqual(int majorVersion, int? minorVersion = null, int? buildVersion = null, int? privateVersion = null)
 	{
 		var fortiVersion = GetFortiClientFileVersionInfo();
@@ -181,7 +181,7 @@ public class FortiConnector
 			 && fortiVersion.ProductMinorPart >= minorVersion
 			);
 	}
-	
+
 	public bool IsFortiClientVersionEqualOrUnder(int majorVersion, int minorVersion = 0)
 	{
 		var fortiVersion = GetFortiClientFileVersionInfo();

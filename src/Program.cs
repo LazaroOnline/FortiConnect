@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using ReactiveUI.Avalonia;
+using Splat;
 
 namespace FortiConnect;
 
@@ -86,12 +87,21 @@ public class Program
 		services.Register<AppSettings>(() => config.Get<AppSettings>());
 		services.Register<AppSettingsWriter>(() => new AppSettingsWriter());
 		services.Register<IEmailService>(() => new EmailService());
-		services.Register<IProcessWritterService>(() => new ProcessWritterService() { DelayToShowWindow = appSettings?.DelayToShowVpnClient ?? AppSettings.DEFAULT_DelayToShowVpnClient});
+		services.Register<IKeyboardState>(() => new KeyboardState());
+		services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_WindowsApi());
+		//services.Register<ISendKeysService>(() => new SendKeysWithWindowsForms());
+		services.Register<ISendKeysService>(() => new SendKeysWithWindowsApi(resolver.GetService<IVirtualKeyboard>()));
+		services.Register<ISendKeysToProcessService>(() => {
+			var sendKeysService = resolver.GetService<ISendKeysService>();
+			return new SendKeysToProcessService(sendKeysService) {
+				DelayToShowWindow = appSettings?.DelayToShowVpnClient ?? AppSettings.DEFAULT_DelayToShowVpnClient
+			};
+		});
 
 		services.RegisterLazySingleton<FortiConnector>(() => {
 			var emailService = resolver.GetService<IEmailService>();
-			var processWritterService = resolver.GetService<IProcessWritterService>();
-			var fortiConnector = new FortiConnector(emailService, processWritterService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
+			var sendKeysToProcessService = resolver.GetService<ISendKeysToProcessService>();
+			var fortiConnector = new FortiConnector(emailService, sendKeysToProcessService, appSettings.EmailAccount?.MarkVpnEmailAsRead ?? false);
 			fortiConnector.LoginPasswordFocusSequence = appSettings?.FortiClient?.LoginPasswordFocusSequence;
 			fortiConnector.LoginVerificationFocusSequence = appSettings?.FortiClient?.LoginVerificationFocusSequence;
 			if (!string.IsNullOrWhiteSpace(appSettings?.FortiClient?.ExeFullPath)) {
