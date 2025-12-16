@@ -3,13 +3,13 @@
 
 ## Developer Software
 - Visual Studio 2026 (or higher)
-- Windows (on Mac or Linux it may work except for the FortiClient automation part that uses WinForms)
+- Windows (on Mac or Linux it may work except for the FortiClient UI automation part that uses Windos APIs to send keys)
 - DotNet 10.0 SDK ([url](https://dotnet.microsoft.com/download))
 
 
 ## Dependencies
 - [(Avalonia-UI)](https://avaloniaui.net): Cross platform UI.
-- WinForms: to automate the FortiClient UI.
+- Windows API: to automate the FortiClient UI keystrokes.
 
 
 ## How to debug
@@ -46,14 +46,19 @@ Graph API requires you to grant access to the app from your office account,
 that may require you to have admin privileges that your company may didn't give you.
 
 
-### SendKeys function only works in Windows:
+### SendKeys / VirtualKeyboard:
+This feature can only work on Windows, Linux and MacOS won't allow this.  
 https://www.reddit.com/r/csharp/comments/9dyf0t/having_my_program_send_an_enter_key_press/  
-Possible solutions:
-- AutoHotkey.Interop: [git](https://github.com/amazing-andrew/AutoHotkey.Interop)  
-- NuGet package "InputSimulator": [git](https://github.com/michaelnoonan/inputsimulator) Basic.  
-- NuGet package "InputSimulatorPlus": [git](https://github.com/TChatzigiannakis/InputSimulatorPlus) Forked from `InputSimulator` adds scan codes.  
-- NuGet package "InputSimulatorStandard": [git](https://github.com/GregsStack/InputSimulatorStandard) Forked from `InputSimulatorPlus` converted to dotnet standard 2.0.  
-- NuGet package "H.InputSimulator": [git](https://github.com/HavenDV/H.InputSimulator) Based on `InputSimulatorStandard` converted to dotnet standard 2.0 or dotnet 8 for AOT and trimming.  
+Available libraries:  
+- WindowsForms `SendKey`: ([git](https://github.com/dotnet/winforms)) Not recommended because adding a reference to WinForms doesn't allow trimming the assembly.  
+- AutoHotkey.Interop: ([git](https://github.com/amazing-andrew/AutoHotkey.Interop)) This is overkill for this task.  
+- NuGet package "InputSimulator": ([git](https://github.com/michaelnoonan/inputsimulator)) Basic.  
+- NuGet package "InputSimulatorPlus": ([git](https://github.com/TChatzigiannakis/InputSimulatorPlus)) Forked from `InputSimulator` adds scan codes.  
+- NuGet package "InputSimulatorStandard": ([git](https://github.com/GregsStack/InputSimulatorStandard)) Forked from `InputSimulatorPlus` converted to dotnet standard 2.0.  
+- NuGet package "H.InputSimulator": ([git](https://github.com/HavenDV/H.InputSimulator)) Based on `InputSimulatorStandard` converted to dotnet standard 2.0 or dotnet 8 for AOT and trimming.  
 
 In order of creation: `InputSimulator < InputSimulatorPlus < InputSimulatorStandard < H.InputSimulator`.  
-So the best option at the moment is `H.InputSimulator`.  
+So the best NuGet package option at the moment is `H.InputSimulator`.  
+Having a custom solution is ideal as far as it just works without many issues,  
+but if issues arrise, just use `H.InputSimulator` as  an IVirtualKeyboard.  
+

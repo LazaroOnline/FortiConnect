@@ -179,10 +179,14 @@ public class VirtualKeyboard_WindowsApi : IVirtualKeyboard
 
 	/// <summary>
 	/// Default waiting milliseconds between chunks of key presses.
-	/// with 10 it misses sending to Notepad.exe process some characters.
-	/// with 20 it works  sending to Notepad.exe process. Use a bit more for safety (ie: 30).
+	/// 
+	/// During integration testing, sending a set of characters to the "Notepad.exe" process:
+	/// with 10ms it misses sending some characters during the special chars sequence.
+	/// with 20ms it works  sending to Notepad.exe process. Use a bit more for safety (ie: 40).
+	/// with 30ms it almost works but still sometimes fails to send the character after a space " ".
+	/// Use 40ms to be safer.
 	/// </summary>
-	public const int DefaultWaitMs = 30;
+	public const int DefaultWaitMs = 40;
 
 	internal static uint SendInputAndWaitInChunks(IEnumerable<INPUT> inputs, int waitMs = DefaultWaitMs)
 	{

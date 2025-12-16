@@ -3,7 +3,7 @@
 
 ## Requirements
 - DotNet 10.0 Runtime ([url](https://dotnet.microsoft.com/download))
-- Windows (on Mac or Linux some functionality like  may still work).
+- Windows (on Mac or Linux some functionality may work like getting the email code, except the UI keystroke automation).
 
 
 ## Configuration
@@ -36,9 +36,11 @@ and overrides the other config files when a value is present.
 > If you are using email rules to move the VPN emails, then make sure to configure the email folder name in: `EmailAccount > InboxSubFolderNameWithVpnEmails`.
 
 > \* **Keystroke sequences**:  
-> Leave not set or null to use the default sequence corresponding to your installed FortiClient version.  
-> To configure the keystroke sequences follow `SendKeys` 
-> [Microsoft's documentation](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys).
+> Leave empty/unset/null, to use the default sequence corresponding to your installed FortiClient version.  
+> To configure the keystroke sequences you can use the same special key codes between curly-braces defined by WinForm's `SendKeys`.
+> Except key-modifiers `+^%` and `~` that will be taken as plain text.
+> See [Microsoft's SendKeys documentation](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.sendkeys).
+
 
 ## Execution
 

@@ -54,7 +54,8 @@ public class SendKeysWithWindowsForms : ISendKeysService
 
 	public void SendKeysWithWait(string keys)
 	{
-		System.Windows.Forms.SendKeys.SendWait(keys);
+		// "SendKeysWithWindowsForms" is just an example, the actual reference to WinForms is commented out to remove it from this project.
+		// System.Windows.Forms.SendKeys.SendWait(keys);
 	}
 
 	public string Escape(string literalTextToWrite)
