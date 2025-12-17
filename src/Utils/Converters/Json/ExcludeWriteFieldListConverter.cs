@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace FortiConnect.Utils;
 
@@ -14,60 +15,78 @@ public class ExcludeWriteFieldListConverter<T> : JsonConverter<T>
 	public IEnumerable<string> FieldsToExclude { get; set; }
 	public StringComparison FieldNameComparison { get; set; } = StringComparison.InvariantCultureIgnoreCase;
 
+	public JsonTypeInfo<T> JsonTypeInfo;
+	public IJsonTypeInfoResolver JsonTypeInfoResolver;
+
 	public ExcludeWriteFieldListConverter(string fieldToExclude)
 	{
 		FieldsToExclude = new List<string>() { fieldToExclude };
 	}
 
+	/// <summary>This constructor is NOT trimming/AOT compatible, left for convenience in case you don't need trimming.</summary>
 	public ExcludeWriteFieldListConverter(params string[] fieldsToExclude)
 	{
 		FieldsToExclude = fieldsToExclude;
 	}
 
+	/// <summary>This constructor IS trimming/AOT compatible. More rigid, uses the serializer options from the 'jsonTypeInfo' parameter.</summary>
+	public ExcludeWriteFieldListConverter(JsonTypeInfo<T> jsonTypeInfo, params string[] fieldsToExclude)
+	{
+		JsonTypeInfo = jsonTypeInfo;
+		FieldsToExclude = fieldsToExclude;
+	}
+
+	/// <summary>This constructor IS trimming/AOT compatible. More flexible, copies the serializer options from the parent instead of using the ones from 'jsonTypeInfoResolver'.</summary>
+	public ExcludeWriteFieldListConverter(IJsonTypeInfoResolver jsonTypeInfoResolver, params string[] fieldsToExclude)
+	{
+		JsonTypeInfoResolver = jsonTypeInfoResolver;
+		FieldsToExclude = fieldsToExclude;
+	}
+
+	public JsonSerializerOptions GetSerializerOptions(JsonSerializerOptions options)
+	{
+		// If the same JsonSerializerOptions converter is used in the de/serialize options, it will enter an infinite loop.
+		// To solve this, create a new cloned JsonSerializerOptions without the converters that would enter the infinite loop.
+		var optionsWithoutConverters = new JsonSerializerOptions(options); // This clones the same options.
+		optionsWithoutConverters.Converters.Clear();
+		//optionsWithoutConverters.TypeInfoResolver = null; // No need to remove this.
+		if (JsonTypeInfoResolver != null) {
+			optionsWithoutConverters.TypeInfoResolver = JsonTypeInfoResolver;
+		}
+		return optionsWithoutConverters;
+	}
+
 	public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 	{
-		// TODO: find a better way of calling the default "Read" method without having to copy the options or entering an infinite loop.
-
-		// If the same converter is used in the de-serialize options, it will enter an infinite loop.
-		var optionsWithoutConverters = new JsonSerializerOptions(
-		//	options
-		) {
-			AllowTrailingCommas = options.AllowTrailingCommas,
-			DefaultIgnoreCondition = options.DefaultIgnoreCondition,
-			Encoder = options.Encoder,
-			DefaultBufferSize = options.DefaultBufferSize,
-			DictionaryKeyPolicy = options.DictionaryKeyPolicy,
-			IgnoreReadOnlyFields = options.IgnoreReadOnlyFields,
-			IgnoreReadOnlyProperties = options.IgnoreReadOnlyProperties,
-			IncludeFields = options.IncludeFields,
-			MaxDepth = options.MaxDepth,
-			NumberHandling = options.NumberHandling,
-			PropertyNameCaseInsensitive = options.PropertyNameCaseInsensitive,
-			PropertyNamingPolicy = options.PropertyNamingPolicy,
-			ReadCommentHandling = options.ReadCommentHandling,
-			ReferenceHandler = options.ReferenceHandler,
-			WriteIndented = options.WriteIndented,
-			Converters = { } // In reality, this should have the same conveters from the original "options" parameter.
-		};
-		return JsonSerializer.Deserialize<T>(ref reader, optionsWithoutConverters);
+		if (JsonTypeInfo != null) {
+			return JsonSerializer.Deserialize<T>(ref reader, JsonTypeInfo);
+		}
+		else {
+			var optionsWithoutConverters = GetSerializerOptions(options);
+			return JsonSerializer.Deserialize<T>(ref reader, optionsWithoutConverters);
+		}
 	}
 
 	public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
 	{
-		// This implementation doesn't have the best performance,
-		// but offers the best maintainability because you don't have to serialize all the non-excluded fields one by one.
-		// https://stackoverflow.com/questions/58566735/how-to-exclude-a-property-from-being-serialized-in-system-text-json-jsonserializ/58566925#58566925
-		writer.WriteStartObject();
-		using (JsonDocument document = JsonDocument.Parse(JsonSerializer.Serialize(value)))
-		{
-			var propertyList = document.RootElement.EnumerateObject();
-			var propertiesNotExcluded = propertyList.Where(p => !FieldsToExclude.Any(f => string.Equals(f, p.Name, FieldNameComparison)));
-			foreach (var property in propertiesNotExcluded)
-			{
-				property.WriteTo(writer);
-			}
+		JsonElement element;
+		if (JsonTypeInfo != null) {
+			element = JsonSerializer.SerializeToElement(value, JsonTypeInfo);
+		}
+		else {
+			var optionsWithoutConverters = GetSerializerOptions(options);
+			element = JsonSerializer.SerializeToElement(value, optionsWithoutConverters);
 		}
 
+		writer.WriteStartObject();
+		foreach (var prop in element.EnumerateObject())
+		{
+			var skipField = FieldsToExclude.Any(f => prop.NameEquals(f));
+			if (skipField) {
+				continue;
+			}
+			prop.WriteTo(writer);
+		}
 		writer.WriteEndObject();
 	}
 }

@@ -15,19 +15,7 @@ public class AppSettingsWriter
 	{
 		var folderPath = CurrentApp.GetFolder();
 		var settingsFullPath = $"{folderPath}/{fileName}";
-
-		var jsonSerializerOptions = new JsonSerializerOptions {
-			WriteIndented = true,
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-			//PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-			Converters = {
-				 new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
-				,new VpnConfigConverter()
-				,new EmailAccountConfigConverter()
-			},
-		};
-
-		string appSettingsJson = JsonSerializer.Serialize(appSettings, jsonSerializerOptions);
+		string appSettingsJson = JsonSerializer.Serialize(appSettings, SourceGenerationContext.Default.AppSettings);
 		File.WriteAllText(settingsFullPath, appSettingsJson);
 	}
 }

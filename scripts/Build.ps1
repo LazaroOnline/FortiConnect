@@ -29,7 +29,7 @@ dotnet publish $csprojPath `
 -p:DebugType=None `
 -p:EnableCompressionInSingleFile=false `
 -p:PublishAot=false `
--p:PublishTrimmed=false `
+-p:PublishTrimmed=true `
 -p:PublishSingleFile=true 
 # Can't enable 'PublishTrimmed' if WindowsForms is referenced.
 # -r "win-x64" 
