@@ -89,8 +89,8 @@ public class Program
 		services.Register<IEmailService>(() => new EmailService());
 		services.Register<IKeyboardState>(() => new KeyboardState());
 
-		services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_WindowsApi());
-		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_HInputSimulator());
+		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_WindowsApi());
+		services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_HInputSimulator());
 		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_InputSimulatorStandard());
 		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_InputSimulatorPlus());
 

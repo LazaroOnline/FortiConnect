@@ -13,8 +13,8 @@ public class SendKeysToProcessServiceTest
 	[InlineData($"Start{KeyCode.TAB}AfterTab{KeyCode.ENTER}{KeyCode.ENTER}END.{KeyCode.ARROW_UP}{KeyCode.ARROW_UP}-{KeyCode.ARROW_DOWN}Special chars:{KeyCode.ENTER}{specialChars}", "Notepad")]
 	public void IntegrationTest_WriteToProcess_Win32(string text, string processName)
 	{
-		var virtualKeyboard = new VirtualKeyboard_WindowsApi();
-		//var virtualKeyboard = new VirtualKeyboard_HInputSimulator();
+		//var virtualKeyboard = new VirtualKeyboard_WindowsApi();
+		var virtualKeyboard = new VirtualKeyboard_HInputSimulator();
 		//var virtualKeyboard = new VirtualKeyboard_InputSimulatorStandard();
 		//var virtualKeyboard = new VirtualKeyboard_InputSimulatorPlus();
 

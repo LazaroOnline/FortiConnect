@@ -11,7 +11,6 @@ public interface IVirtualKeyboard
 	void KeyPress(VirtualKeyCode key);
 }
 
-/*
 // Alternatives using nuget packages:
 
 // https://github.com/HavenDV/H.InputSimulator
@@ -38,6 +37,7 @@ public class VirtualKeyboard_HInputSimulator : IVirtualKeyboard
 }
 
 
+/*
 // https://github.com/GregsStack/InputSimulatorStandard
 public class VirtualKeyboard_InputSimulatorStandard : IVirtualKeyboard
 {
