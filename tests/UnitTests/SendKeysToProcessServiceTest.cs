@@ -14,6 +14,10 @@ public class SendKeysToProcessServiceTest
 	public void IntegrationTest_WriteToProcess_Win32(string text, string processName)
 	{
 		var virtualKeyboard = new VirtualKeyboard_WindowsApi();
+		//var virtualKeyboard = new VirtualKeyboard_HInputSimulator();
+		//var virtualKeyboard = new VirtualKeyboard_InputSimulatorStandard();
+		//var virtualKeyboard = new VirtualKeyboard_InputSimulatorPlus();
+
 		ISendKeysService sendKeysService = new SendKeysWithWindowsApi(virtualKeyboard);
 		IntegrationTest_WriteToProcess(text, processName, sendKeysService);
 	}
@@ -35,7 +39,6 @@ public class SendKeysToProcessServiceTest
 		// Process names are case-insensitive
 		// var process = Process.GetProcessesByName(processName).FirstOrDefault();
 		var process = FortiConnector.GetExistingProcess(processName);
-		var virtualKeyboard = new VirtualKeyboard_WindowsApi();
 		var sut = new SendKeysToProcessService(sendKeysService);
 
 		// Act:

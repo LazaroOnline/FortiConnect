@@ -12,28 +12,77 @@ public interface IVirtualKeyboard
 }
 
 /*
+// Alternatives using nuget packages:
+
 // https://github.com/HavenDV/H.InputSimulator
+public class VirtualKeyboard_HInputSimulator : IVirtualKeyboard
+{
+	public const int DefaultWaitMs = 60;
+	private readonly WindowsInput.InputSimulator _sim = new();
+
+	public void Text(string text)
+	{
+		var inputChunks = text.Chunk(1);
+		foreach (var inputChunk in inputChunks)
+		{
+			_sim.Keyboard.TextEntry(new string(inputChunk));
+			Thread.Sleep(DefaultWaitMs);
+		}
+	}
+
+	public void KeyPress(VirtualKeyCode key)
+	{
+		_sim.Keyboard.KeyPress((WindowsInput.VirtualKeyCode)key);
+		Thread.Sleep(DefaultWaitMs);
+	}
+}
+
+
 // https://github.com/GregsStack/InputSimulatorStandard
 public class VirtualKeyboard_InputSimulatorStandard : IVirtualKeyboard
 {
-	private readonly InputSimulator _sim = new();
+	public const int DefaultWaitMs = 60;
+	private readonly InputSimulatorStandard.InputSimulator _sim = new();
 
 	public void Text(string text)
-		=> _sim.Keyboard.TextEntry(text);
+	{
+		var inputChunks = text.Chunk(1);
+		foreach (var inputChunk in inputChunks)
+		{
+			_sim.Keyboard.TextEntry(new string(inputChunk));
+			Thread.Sleep(DefaultWaitMs);
+		}
+	}
 
 	public void KeyPress(VirtualKeyCode key)
-		=> _sim.Keyboard.KeyPress(key);
+	{
+		_sim.Keyboard.KeyPress((InputSimulatorStandard.Native.VirtualKeyCode)key);
+		Thread.Sleep(DefaultWaitMs);
+	}
 }
 
 // https://github.com/michaelnoonan/inputsimulator
 // https://github.com/TChatzigiannakis/InputSimulatorPlus
 public class VirtualKeyboard_InputSimulatorPlus : IVirtualKeyboard
 {
+	public const int DefaultWaitMs = 60;
+	private readonly WindowsInput.InputSimulator _sim = new();
+
 	public void Text(string text)
-		=> InputSimulator.SimulateTextEntry(text);
+	{
+		var inputChunks = text.Chunk(1);
+		foreach (var inputChunk in inputChunks)
+		{
+			_sim.Keyboard.TextEntry(new string(inputChunk));
+			Thread.Sleep(DefaultWaitMs);
+		}
+	}
 
 	public void KeyPress(VirtualKeyCode key)
-		=> InputSimulator.SimulateKeyDown(key);
+	{
+		_sim.Keyboard.KeyPress((WindowsInput.Native.VirtualKeyCode)key);
+		Thread.Sleep(DefaultWaitMs);
+	}
 }
 */
 

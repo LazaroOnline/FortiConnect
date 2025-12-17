@@ -88,9 +88,15 @@ public class Program
 		services.Register<AppSettingsWriter>(() => new AppSettingsWriter());
 		services.Register<IEmailService>(() => new EmailService());
 		services.Register<IKeyboardState>(() => new KeyboardState());
+
 		services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_WindowsApi());
-		//services.Register<ISendKeysService>(() => new SendKeysWithWindowsForms());
+		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_HInputSimulator());
+		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_InputSimulatorStandard());
+		//services.Register<IVirtualKeyboard>(() => new VirtualKeyboard_InputSimulatorPlus());
+
 		services.Register<ISendKeysService>(() => new SendKeysWithWindowsApi(resolver.GetService<IVirtualKeyboard>()));
+		//services.Register<ISendKeysService>(() => new SendKeysWithWindowsForms());
+
 		services.Register<ISendKeysToProcessService>(() => {
 			var sendKeysService = resolver.GetService<ISendKeysService>();
 			return new SendKeysToProcessService(sendKeysService) {
