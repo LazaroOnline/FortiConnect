@@ -15,4 +15,5 @@ and email code in the FortiClient VPN application.
 
 
 <img src="./docs/images/FortiConnect-UI.png" alt="FortiConnect-UI" width="400"/>  
+<img src="./docs/images/FortiClient/FortiClientVPN-Connecting.png" alt="FortiClientVPN-UI Connecting" width="800"/>  
 
