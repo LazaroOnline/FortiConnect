@@ -58,7 +58,7 @@ public class FortiConnector
 
 	public string GetLoginKeystrokes(string vpnUserPass)
 	{
-		var enter = KeyCode.GetKeyEnter();
+		var enter = KeyCode.ENTER;
 		var vpnUserPassLiteral = _sendKeysToProcessService.EscapeLiteralTextToWrite(vpnUserPass);
 		var passwordFocusSequence = GetLoginPasswordFocusSequence();
 		return passwordFocusSequence + vpnUserPassLiteral + enter;
@@ -66,7 +66,7 @@ public class FortiConnector
 
 	public string GetLoginPasswordFocusSequence()
 	{
-		var tab = KeyCode.GetKeyTab();
+		var tab = KeyCode.TAB;
 
 		if (LoginPasswordFocusSequence != null)
 			return LoginPasswordFocusSequence;
@@ -84,7 +84,7 @@ public class FortiConnector
 
 	public string GetLoginConfirmationKeystrokes(string vpnEmailCode)
 	{
-		var enter = KeyCode.GetKeyEnter();
+		var enter = KeyCode.ENTER;
 		var vpnEmailCodeLiteral = _sendKeysToProcessService.EscapeLiteralTextToWrite(vpnEmailCode);
 		var loginVerificationFocusSequence = GetLoginVerificationFocusSequence();
 		return loginVerificationFocusSequence + vpnEmailCodeLiteral + enter;

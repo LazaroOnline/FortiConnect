@@ -10,12 +10,10 @@ public interface ISendKeysService
 	string Escape(string keys);
 }
 
-// To use Windows forms you need to add to your csproj:
-// <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-// <UseWPF>true</UseWPF>
+// To use Windows forms you need to add to your csproj in a PropertyGroup:
 // <UseWindowsForms>true</UseWindowsForms>
-// https://stackoverflow.com/questions/38460253/how-to-use-system-windows-forms-in-net-core-class-library
-// https://stackoverflow.com/questions/825651/how-can-i-send-the-f4-key-to-a-process-in-c
+// and add "-windows" to the TargetFramework, example:
+// <TargetFramework>net10.0-windows</TargetFramework>
 public class SendKeysWithWindowsForms : ISendKeysService
 {
 	/// <summary>

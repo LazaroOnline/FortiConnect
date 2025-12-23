@@ -119,28 +119,6 @@ public static class KeyCode
 		}
 		return null;
 	}
-
-	public static string GetKeyTab()
-	{
-		return KeyCode.TAB;
-		//return GetKeyCode(Avalonia.Input.Key.Tab);
-	}
-
-	public static string GetKeyEnter()
-	{
-		return KeyCode.ENTER;
-		//return GetKeyCode(Avalonia.Input.Key.Enter);
-	}
-
-	public static string GetKeyCode(Avalonia.Input.Key key)
-	{
-		switch (key)
-		{
-			case Avalonia.Input.Key.Enter: return KeyCode.ENTER;
-			case Avalonia.Input.Key.Tab: return KeyCode.TAB;
-			default: throw new NotImplementedException("If more special keys are required, keep adding them to the supported list in source code.");
-		}
-	}
 }
 
 public enum VirtualKeyCode //: UInt16

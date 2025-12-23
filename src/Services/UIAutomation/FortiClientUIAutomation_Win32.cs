@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Text;
+using System.Runtime.InteropServices;
 
 namespace FortiConnect.Services;
 
@@ -21,6 +22,22 @@ public class FortiClientUIAutomation_Win32 : IFortiClientUIAutomation
 		}
 		SetControlStringByReplace(hWnd, "Edit", "passwordTextbox", password);
 		ControlMouseClick(hWnd, "Button", "connect");
+	}
+
+	public IntPtr? SearchChildControlExample(IntPtr hWnd, string text, IntPtr? lParam = null)
+	{
+		IntPtr? control = null;
+		EnumChildWindows(hWnd, (IntPtr childControl, IntPtr lParam) => {
+			// Return "false" if you find your element to stop the enumeration, return true to continue.
+			var sb = new StringBuilder();
+			GetClassName(hWnd, sb, 256);
+			if (!sb.ToString().Contains(text)) {
+				return true;
+			}
+			control = childControl;
+			return false;
+		}, lParam ?? IntPtr.Zero);
+		return control;
 	}
 
 	public static void SetControlStringByReplace(IntPtr hWnd, string controlName, string controlText, string newText)
@@ -80,6 +97,8 @@ public class FortiClientUIAutomation_Win32 : IFortiClientUIAutomation
 		return hEdit;
 	}
 
+	const int WM_CHAR = 0x102;
+	const int WM_PASTE = 0x0302;
 	const int EM_SETSEL = 0x00B1;
 	const int WM_SETTEXT = 0x000C;
 	const int EM_REPLACESEL = 0x00C2;
@@ -96,6 +115,14 @@ public class FortiClientUIAutomation_Win32 : IFortiClientUIAutomation
 		IntPtr hwndChildAfter,
 		string lpszClass,
 		string lpszWindow);
+
+	delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+	[DllImport("user32.dll")]
+	static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+	[DllImport("user32.dll")]
+	static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
 	[DllImport("user32.dll", CharSet = CharSet.Auto)]
 	public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, string lParam);

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace FortiConnect.Utils;
+namespace FortiConnect.Services;
 
 public interface IKeyboardState
 {
