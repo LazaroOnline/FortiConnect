@@ -33,8 +33,7 @@ public class SendKeysWithWindowsFormsTest
 	[InlineData("o1{}}{%}{+}{^}o%o+o^o~o^(abc)o%(abc)+(abc){BACKSPACE},.$[][oo]{}", 23, "Almost all special cases in 1 at the same time.")]
 	public void SplitSendKeysTextIntoCommands(string text, int expectedCommandCount, string reason = null)
 	{
-		var sut = new SendKeysWithWindowsForms();
-		var result = sut.SplitSendKeysTextIntoCommands(text);
+		var result = SendKeysLang.SplitSendKeysTextIntoCommands(text);
 		result.Count.Should().Be(expectedCommandCount, reason);
 	}
 }
