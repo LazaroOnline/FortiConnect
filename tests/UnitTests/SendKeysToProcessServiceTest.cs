@@ -6,7 +6,7 @@ public class SendKeysToProcessServiceTest
 
 	[Theory
 	// Comment this line to run this test manually.
-	(Skip = "Skip, only execute manually")
+	//(Skip = "Skip, only execute manually")
 	]
 	//[InlineData("a", "Notepad")] // Simple key test
 	//[InlineData("{invalid}", "Notepad")] // Invalid command > writes as plain text.
@@ -24,7 +24,7 @@ public class SendKeysToProcessServiceTest
 
 	[Theory
 	// Comment this line to run this test manually. (Would require adding WinForms reference back to the project)
-	(Skip = "Skip, WinForms reference was removed from the project")
+	//(Skip = "Skip, WinForms reference was removed from the project")
 	]
 	//[InlineData("{invalid}", "Notepad")] // Invalid command > Throws exception (not because we want it, but because WinForms behaves like this).
 	[InlineData($"Start+(shiftGroup){KeyCode.TAB}AfterTab{KeyCode.ENTER}{KeyCode.ENTER}END.", "Notepad")]
